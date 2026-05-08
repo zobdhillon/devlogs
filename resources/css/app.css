@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        background-color: #2d2640;
+        color: #f0ece8;
+        font-family: "Plus Jakarta Sans", sans-serif;
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px #251f38 inset !important;
+        -webkit-text-fill-color: #f0ece8 !important;
+        caret-color: #f0ece8;
+    }
+}
