@@ -3,10 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Models\Topic;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Mcp\Server\Resource;
 
 class User extends Authenticatable
 {
@@ -36,5 +36,20 @@ class User extends Authenticatable
     public function topics()
     {
         return $this->hasMany(Topic::class);
+    }
+
+    public function logs()
+    {
+        return $this->hasMany(Log::class);
+    }
+
+    public function goals()
+    {
+        return $this->hasMany(Goal::class);
+    }
+
+    public function resources()
+    {
+        return $this->hasMany(Resource::class);
     }
 }

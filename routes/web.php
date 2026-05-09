@@ -22,4 +22,4 @@ Route::middleware('auth')->group(function () {
     Route::resource('topics', TopicController::class);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

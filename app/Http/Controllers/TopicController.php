@@ -10,7 +10,8 @@ class TopicController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $topics = $user->topics()->latest()->get();;
+        $topics = $user->topics()->latest()->get();
+
         return view('topics.index', compact('topics'));
     }
 

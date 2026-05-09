@@ -9,14 +9,14 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=space-grotesk:400,500,600,700|plus-jakarta-sans:400,500"
+            rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="font-sans text-devlog-text antialiased bg-devlog-bg min-h-screen">
+    <body class="font-sans text-devlog-text antialiased dashboard-bg min-h-screen">
         @include('layouts.navigation')
 
         @isset($header)
