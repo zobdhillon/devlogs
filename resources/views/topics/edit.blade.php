@@ -1,8 +1,7 @@
 <x-app-layout>
 
-    {{-- Add Topic Form --}}
-    <div class="dash-card mb-4" x-data="{
-        icon: 'devicon-javascript-plain',
+    <div class="dash-card max-w-2xl mx-auto" x-data="{
+        icon: '{{ $topic->icon ?? 'devicon-javascript-plain' }}',
         iconOpen: false,
         icons: [
             'devicon-javascript-plain', 'devicon-typescript-plain', 'devicon-python-plain',
@@ -17,14 +16,28 @@
             'devicon-figma-plain', 'devicon-vscode-plain', 'devicon-firebase-plain'
         ]
     }">
-        <h2 class="text-white font-bold text-lg mb-4" style="font-family:'Space Grotesk',sans-serif">Add New Topic</h2>
-        <form method="POST" action="{{ route('topics.store') }}">
+
+        {{-- Header --}}
+        <div class="flex items-center gap-3 mb-6">
+            <a href="{{ route('topics.index') }}" class="text-sm transition-colors duration-150" style="color:#8b7fa8"
+                onmouseover="this.style.color='#a855f7'" onmouseout="this.style.color='#8b7fa8'">
+                ← Back
+            </a>
+            <h2 class="text-white font-bold text-lg" style="font-family:'Space Grotesk',sans-serif">
+                Edit Topic
+            </h2>
+        </div>
+
+        {{-- Edit Form --}}
+        <form method="POST" action="{{ route('topics.update', $topic) }}">
             @csrf
+            @method('PUT')
+
             <div class="flex flex-wrap gap-3 items-center">
 
                 {{-- Name --}}
-                <input type="text" name="name" placeholder="Topic name e.g. React" value="{{ old('name') }}"
-                    required class="auth-input flex-1 min-w-48" />
+                <input type="text" name="name" placeholder="Topic name e.g. React"
+                    value="{{ old('name', $topic->name) }}" required class="auth-input flex-1 min-w-48" />
 
                 {{-- Color swatches --}}
                 <div class="flex items-center gap-2">
@@ -32,7 +45,7 @@
                         <label class="topic-color-swatch"
                             style="background:{{ $c }};box-shadow:0 0 8px {{ $c }}">
                             <input type="radio" name="color" value="{{ $c }}" class="hidden"
-                                {{ old('color', '#41b883') === $c ? 'checked' : '' }}>
+                                {{ old('color', $topic->color) === $c ? 'checked' : '' }}>
                         </label>
                     @endforeach
                 </div>
@@ -59,7 +72,7 @@
                         x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100"
                         x-transition:leave-end="opacity-0"
                         class="icon-picker-grid absolute z-50 mt-1 rounded-xl p-2 grid grid-cols-6 gap-1"
-                        style="background:#0e0a1f;border:1px solid rgba(168,85,247,0.25);width:220px;max-height:200px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                        style="background:#0e0a1f; border:1px solid rgba(168,85,247,0.25); width:220px; max-height:200px; overflow-y:auto; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
                         <template x-for="ic in icons" :key="ic">
                             <button type="button" @click="icon = ic; iconOpen = false"
                                 class="flex items-center justify-center p-2 rounded-lg transition-all duration-100"
@@ -75,7 +88,11 @@
                 </div>
 
                 {{-- Status dropdown --}}
-                <div x-data="{ open: false, selected: '{{ old('status', 'active') }}', options: ['active', 'paused', 'completed'] }" class="relative">
+                <div x-data="{
+                    open: false,
+                    selected: '{{ old('status', $topic->status) }}',
+                    options: ['active', 'paused', 'completed']
+                }" class="relative">
                     <input type="hidden" name="status" :value="selected">
                     <button type="button" @click="open = !open"
                         class="auth-input w-36 flex items-center justify-between gap-2 cursor-pointer">
@@ -93,70 +110,31 @@
                     </div>
                 </div>
 
-                {{-- Progress --}}
-                <div class="flex items-center gap-3" x-data="{ progress: {{ old('progress', 0) }} }">
+                <div class="flex items-center gap-3" x-data="{ progress: {{ $topic->progress }} }">
                     <input type="range" name="progress" min="0" max="100" x-model="progress"
                         class="topic-slider" />
                     <span class="text-sm w-10" style="color:#8b7fa8" x-text="progress + '%'"></span>
                 </div>
 
+                {{-- Submit --}}
                 <button type="submit" class="btn-primary px-6 py-2 rounded-xl text-sm font-semibold">
-                    Add Topic
+                    Save Changes
                 </button>
+
+                {{-- Cancel --}}
+                <a href="{{ route('topics.index') }}"
+                    class="px-6 py-2 rounded-xl text-sm font-semibold transition-colors duration-150"
+                    style="color:#8b7fa8;border:1px solid rgba(168,85,247,0.15)"
+                    onmouseover="this.style.color='#f0ece8'" onmouseout="this.style.color='#8b7fa8'">
+                    Cancel
+                </a>
             </div>
+
             @error('name')
                 <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
             @enderror
         </form>
-    </div>
 
-    {{-- Topics List --}}
-    <div class="dash-card">
-        <h2 class="text-white font-bold text-lg mb-4" style="font-family:'Space Grotesk',sans-serif">Your Topics</h2>
-
-        @forelse($topics as $topic)
-            {{-- Each row has a unique id so fadeRemove() can find and remove it --}}
-            <div id="topic-{{ $topic->id }}" class="flex items-center gap-3 py-3 border-b"
-                style="border-color:rgba(168,85,247,0.08)">
-
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style="background:{{ $topic->color }}18;border:1px solid {{ $topic->color }}33;">
-                    <i class="{{ $topic->icon ?? 'devicon-code-plain' }} text-base"
-                        style="color:{{ $topic->color }};"></i>
-                </div>
-
-                <span class="flex-1 text-sm font-medium" style="color:#f0ece8">{{ $topic->name }}</span>
-
-                <span class="dash-badge dash-badge-{{ $topic->status }}">{{ $topic->status }}</span>
-
-                <div class="flex items-center gap-2 w-28">
-                    <div class="flex-1 h-1.5 rounded-full" style="background:rgba(168,85,247,0.1)">
-                        <div class="h-full rounded-full transition-all"
-                            style="width:{{ $topic->progress }}%;background:{{ $topic->color }};box-shadow:0 0 6px {{ $topic->color }}">
-                        </div>
-                    </div>
-                    <span class="text-xs w-8 text-right" style="color:#8b7fa8">{{ $topic->progress }}%</span>
-                </div>
-
-                <div class="flex items-center gap-2 ml-2">
-                    <a href="{{ route('topics.edit', $topic) }}" class="topic-action-btn">Edit</a>
-
-                    <button type="button" class="topic-action-btn topic-delete-btn"
-                        @click="$dispatch('confirm-delete', {
-                            title: 'Delete {{ addslashes($topic->name) }}?',
-                            callback: () => deleteRecord('topics', {{ $topic->id }})
-                        })">
-                        Delete
-                    </button>
-                </div>
-            </div>
-        @empty
-            <div class="text-center py-12">
-                <div class="text-4xl mb-3">📚</div>
-                <p class="text-sm mb-1" style="color:#f0ece8">No topics yet</p>
-                <p class="text-xs" style="color:#8b7fa8">Add your first learning topic above</p>
-            </div>
-        @endforelse
     </div>
 
 </x-app-layout>

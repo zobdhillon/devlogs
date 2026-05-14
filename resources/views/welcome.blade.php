@@ -8,161 +8,157 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=space-grotesk:700,800|plus-jakarta-sans:400,500,600"
             rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="page devlog-bg">
+    <body class="page">
 
-        {{-- Starfield --}}
-        <div class="stars" aria-hidden="true">
-            <div class="star star-1"></div>
-            <div class="star star-2"></div>
-            <div class="star star-3"></div>
-            <div class="star star-4"></div>
-            <div class="star star-5"></div>
-            <div class="star star-6"></div>
-            <div class="star star-7"></div>
-            <div class="star star-8"></div>
-            <div class="star star-9"></div>
-            <div class="star star-10"></div>
-            <div class="star star-11"></div>
-            <div class="star star-12"></div>
-        </div>
+        {{-- Orbs --}}
+        <div class="orb orb-tl" aria-hidden="true"></div>
+        <div class="orb orb-tr" aria-hidden="true"></div>
+        <div class="orb orb-br" aria-hidden="true"></div>
+        <div class="orb orb-bl" aria-hidden="true"></div>
 
-        {{-- ===================== ABOVE THE FOLD ===================== --}}
+        {{-- NAV --}}
+        <nav class="welcome-nav">
+            <x-logo-sm />
+            <div class="welcome-nav-btns">
+                @auth
+                    <a href="{{ route('dashboard') }}" class="btn-ghost">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn-ghost">Log in</a>
+                    <a href="{{ route('register') }}" class="btn-primary">Get Started</a>
+                @endauth
+            </div>
+        </nav>
 
-        <div class="welcome-top">
-            {{-- Navbar --}}
-            <nav class="welcome-nav">
-                <x-logo />
-                <div class="welcome-nav-btns">
-                    @auth
-                        <a href="{{ route('dashboard') }}" class="btn-ghost">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="btn-ghost">Log in</a>
-                        <a href="{{ route('register') }}" class="btn-primary">Get Started</a>
-                    @endauth
-                </div>
-            </nav>
+        {{-- HERO --}}
+        <section class="welcome-hero">
+            <h1 class="welcome-h1">
+                Track your<br>
+                <span class="welcome-h1-accent">learning journey</span>
+            </h1>
+            <p class="welcome-tagline">
+                Log your progress, set goals, save resources and share your developer story with the world.
+            </p>
+            <div class="welcome-hero-btns">
+                <a href="{{ route('register') }}" class="btn-lg btn-lg-primary">Get Started — it's free →</a>
+                <a href="#demo" class="btn-lg btn-lg-ghost">See how it works ↓</a>
+            </div>
+        </section>
 
-            {{-- Hero --}}
-            <section class="welcome-hero">
-                <div class="welcome-radial" aria-hidden="true"></div>
+        {{-- DEMO --}}
+        <section class="welcome-demo" id="demo">
+            <div class="demo-label">
+                <div class="demo-label-dot"></div> Live demo
+            </div>
+            <h2 class="demo-title">See how it all <span class="demo-title-accent">works</span></h2>
+            <p class="demo-sub">Track progress, manage goals and stay in flow — all in one place.</p>
 
-                <h1 class="welcome-h1">
-                    Track your<br>
-                    <span class="welcome-h1-accent">learning journey</span>
-                </h1>
+            {{-- Top grid: Topics + Logs --}}
+            <div class="demo-grid">
 
-                <p class="welcome-tagline">
-                    Log your progress, set goals, save resources and share<br>
-                    your developer story with the world.
-                </p>
-
-                <a href="#demo" class="btn-primary btn-lg welcome-demo-btn">
-                    See a demo
-                    <span class="welcome-demo-arr" aria-hidden="true">↓</span>
-                </a>
-
-                <div class="welcome-scroll-hint" aria-hidden="true">
-                    <div class="welcome-scroll-line"></div>
-                    <span class="welcome-scroll-label">scroll to explore</span>
-                </div>
-            </section>
-        </div>
-
-        {{-- ===================== BELOW THE FOLD — DEMO ===================== --}}
-
-        <section class="welcome-demo-section" id="demo">
-
-            <p class="welcome-demo-eyebrow">Live demo</p>
-            <h2 class="welcome-demo-title">See how it all <span class="welcome-demo-title-accent">works</span></h2>
-
-            {{-- Top row: Topics + Recent Logs --}}
-            <div class="welcome-demo-grid">
-
-                {{-- Topics progress --}}
-                <div class="welcome-demo-card">
-                    <div class="welcome-demo-titlebar">
-                        <span class="titlebar-dot dot-terracotta"></span>
+                {{-- Topics --}}
+                <div class="demo-card">
+                    <div class="demo-titlebar">
+                        <span class="titlebar-dot dot-orange"></span>
                         <span class="titlebar-dot dot-muted"></span>
-                        <span class="titlebar-dot dot-accent"></span>
+                        <span class="titlebar-dot dot-purple"></span>
                         <span class="titlebar-label">My Topics</span>
                     </div>
-                    <div class="welcome-demo-body">
-                        <div class="topic-progress-row">
-                            <span class="topic-progress-name" style="color: #7c6af0;">React</span>
-                            <div class="topic-progress-track">
-                                <div class="topic-progress-fill" style="width: 78%; background: #7c6af0;"></div>
+                    <div class="demo-body">
+                        <div class="topic-row">
+                            <div class="topic-icon" style="background:rgba(97,218,251,0.12)"><i
+                                    class="devicon-react-original colored" style="font-size:17px"></i></div>
+                            <span class="topic-name">React</span>
+                            <div class="topic-track">
+                                <div class="topic-fill"
+                                    style="width:78%;background:linear-gradient(90deg,#a855f7,#7c3aed);box-shadow:0 0 8px rgba(168,85,247,0.6)">
+                                </div>
                             </div>
-                            <span class="topic-progress-pct">78%</span>
+                            <span class="topic-pct">78%</span>
                         </div>
-                        <div class="topic-progress-row">
-                            <span class="topic-progress-name" style="color: #c4785a;">Laravel</span>
-                            <div class="topic-progress-track">
-                                <div class="topic-progress-fill" style="width: 65%; background: #c4785a;"></div>
+                        <div class="topic-row">
+                            <div class="topic-icon" style="background:rgba(255,45,32,0.12)"><i
+                                    class="devicon-laravel-plain colored" style="font-size:17px"></i></div>
+                            <span class="topic-name" style="color:#f97316">Laravel</span>
+                            <div class="topic-track">
+                                <div class="topic-fill"
+                                    style="width:65%;background:linear-gradient(90deg,#f97316,#ea580c);box-shadow:0 0 8px rgba(249,115,22,0.5)">
+                                </div>
                             </div>
-                            <span class="topic-progress-pct">65%</span>
+                            <span class="topic-pct">65%</span>
                         </div>
-                        <div class="topic-progress-row">
-                            <span class="topic-progress-name" style="color: #9b92b8;">Vue 3</span>
-                            <div class="topic-progress-track">
-                                <div class="topic-progress-fill" style="width: 38%; background: #9b92b8;"></div>
+                        <div class="topic-row">
+                            <div class="topic-icon" style="background:rgba(65,184,131,0.12)"><i
+                                    class="devicon-vuejs-plain colored" style="font-size:17px"></i></div>
+                            <span class="topic-name">Vue 3</span>
+                            <div class="topic-track">
+                                <div class="topic-fill"
+                                    style="width:38%;background:#41b883;box-shadow:0 0 6px rgba(65,184,131,0.4)"></div>
                             </div>
-                            <span class="topic-progress-pct">38%</span>
+                            <span class="topic-pct">38%</span>
                         </div>
-                        <div class="topic-progress-row">
-                            <span class="topic-progress-name" style="color: #9b92b8;">JavaScript</span>
-                            <div class="topic-progress-track">
-                                <div class="topic-progress-fill" style="width: 52%; background: #4a4168;"></div>
+                        <div class="topic-row">
+                            <div class="topic-icon" style="background:rgba(247,223,30,0.12)"><i
+                                    class="devicon-javascript-plain colored" style="font-size:17px"></i></div>
+                            <span class="topic-name">JavaScript</span>
+                            <div class="topic-track">
+                                <div class="topic-fill"
+                                    style="width:52%;background:#f7df1e;box-shadow:0 0 6px rgba(247,223,30,0.3)"></div>
                             </div>
-                            <span class="topic-progress-pct">52%</span>
+                            <span class="topic-pct">52%</span>
                         </div>
-                        <div class="topic-progress-row">
-                            <span class="topic-progress-name" style="color: #9b92b8;">TypeScript</span>
-                            <div class="topic-progress-track">
-                                <div class="topic-progress-fill" style="width: 20%; background: #9b92b8;"></div>
+                        <div class="topic-row">
+                            <div class="topic-icon" style="background:rgba(49,120,198,0.12)"><i
+                                    class="devicon-typescript-plain colored" style="font-size:17px"></i></div>
+                            <span class="topic-name">TypeScript</span>
+                            <div class="topic-track">
+                                <div class="topic-fill"
+                                    style="width:20%;background:#3178c6;box-shadow:0 0 6px rgba(49,120,198,0.4)"></div>
                             </div>
-                            <span class="topic-progress-pct">20%</span>
+                            <span class="topic-pct">20%</span>
                         </div>
                     </div>
                 </div>
 
                 {{-- Recent Logs --}}
-                <div class="welcome-demo-card">
-                    <div class="welcome-demo-titlebar">
-                        <span class="titlebar-dot dot-terracotta"></span>
+                <div class="demo-card">
+                    <div class="demo-titlebar">
+                        <span class="titlebar-dot dot-orange"></span>
                         <span class="titlebar-dot dot-muted"></span>
-                        <span class="titlebar-dot dot-accent"></span>
+                        <span class="titlebar-dot dot-purple"></span>
                         <span class="titlebar-label">Recent Logs</span>
                     </div>
-                    <div class="welcome-demo-body">
-                        <div class="demo-log-row">
-                            <span class="demo-log-dot" style="background: #7c6af0;"></span>
-                            <div class="demo-log-content">
-                                <div class="demo-log-title">Finished React hooks deep dive</div>
-                                <div class="demo-log-meta">React &middot; 2 hours ago &middot; mood 5/5</div>
+                    <div class="demo-body">
+                        <div class="log-row">
+                            <span class="log-dot" style="background:#a855f7;box-shadow:0 0 8px #a855f7"></span>
+                            <div>
+                                <div class="log-title">Finished React hooks deep dive</div>
+                                <div class="log-meta">React · 2 hours ago · mood 5/5</div>
                             </div>
                         </div>
-                        <div class="demo-log-row">
-                            <span class="demo-log-dot" style="background: #c4785a;"></span>
-                            <div class="demo-log-content">
-                                <div class="demo-log-title">Set up Laravel Breeze auth flow</div>
-                                <div class="demo-log-meta">Laravel &middot; yesterday &middot; mood 4/5</div>
+                        <div class="log-row">
+                            <span class="log-dot" style="background:#f97316;box-shadow:0 0 8px #f97316"></span>
+                            <div>
+                                <div class="log-title">Set up Laravel Breeze auth flow</div>
+                                <div class="log-meta">Laravel · yesterday · mood 4/5</div>
                             </div>
                         </div>
-                        <div class="demo-log-row">
-                            <span class="demo-log-dot" style="background: #9b92b8;"></span>
-                            <div class="demo-log-content">
-                                <div class="demo-log-title">Explored Vue 3 Composition API</div>
-                                <div class="demo-log-meta">Vue 3 &middot; 2 days ago &middot; mood 3/5</div>
+                        <div class="log-row">
+                            <span class="log-dot" style="background:#41b883;box-shadow:0 0 6px #41b883"></span>
+                            <div>
+                                <div class="log-title">Explored Vue 3 Composition API</div>
+                                <div class="log-meta">Vue 3 · 2 days ago · mood 3/5</div>
                             </div>
                         </div>
-                        <div class="demo-log-row">
-                            <span class="demo-log-dot" style="background: #4a4168;"></span>
-                            <div class="demo-log-content">
-                                <div class="demo-log-title">JS async/await patterns</div>
-                                <div class="demo-log-meta">JavaScript &middot; 3 days ago &middot; mood 4/5</div>
+                        <div class="log-row">
+                            <span class="log-dot"
+                                style="background:#f7df1e;box-shadow:0 0 6px rgba(247,223,30,0.6)"></span>
+                            <div>
+                                <div class="log-title">JS async/await patterns</div>
+                                <div class="log-meta">JavaScript · 3 days ago · mood 4/5</div>
                             </div>
                         </div>
                     </div>
@@ -170,91 +166,95 @@
 
             </div>
 
-            {{-- Full-width Dashboard preview --}}
-            <div class="welcome-demo-card welcome-demo-card-full">
-                <div class="welcome-demo-titlebar">
-                    <span class="titlebar-dot dot-terracotta"></span>
+            {{-- Full width Dashboard --}}
+            <div class="demo-card demo-card-full">
+                <div class="demo-titlebar">
+                    <span class="titlebar-dot dot-orange"></span>
                     <span class="titlebar-dot dot-muted"></span>
-                    <span class="titlebar-dot dot-accent"></span>
-                    <span class="titlebar-label">Dashboard — @ali_dev</span>
+                    <span class="titlebar-dot dot-purple"></span>
+                    <span class="titlebar-label">Dashboard — @zobia_dev</span>
                 </div>
-                <div class="welcome-demo-body">
-
-                    {{-- Stats row --}}
-                    <div class="demo-stats-row">
+                <div class="demo-body">
+                    <div class="demo-stats">
                         <div class="demo-stat">
-                            <div class="demo-stat-number">24</div>
-                            <div class="demo-stat-label">Total logs</div>
+                            <div class="demo-stat-icon"
+                                style="background:rgba(168,85,247,0.2);box-shadow:0 0 12px rgba(168,85,247,0.2)">📝
+                            </div>
+                            <div>
+                                <div class="demo-stat-num">24</div>
+                                <div class="demo-stat-label">Total logs</div>
+                            </div>
                         </div>
                         <div class="demo-stat">
-                            <div class="demo-stat-number" style="color: #7c6af0;">5</div>
-                            <div class="demo-stat-label">Active topics</div>
+                            <div class="demo-stat-icon"
+                                style="background:rgba(168,85,247,0.2);box-shadow:0 0 12px rgba(168,85,247,0.2)">📚
+                            </div>
+                            <div>
+                                <div class="demo-stat-num"
+                                    style="color:#a855f7;text-shadow:0 0 20px rgba(168,85,247,0.5)">5</div>
+                                <div class="demo-stat-label">Active topics</div>
+                            </div>
                         </div>
                         <div class="demo-stat">
-                            <div class="demo-stat-number" style="color: #c4785a;">3</div>
-                            <div class="demo-stat-label">Goals due soon</div>
+                            <div class="demo-stat-icon"
+                                style="background:rgba(249,115,22,0.2);box-shadow:0 0 12px rgba(249,115,22,0.2)">🎯
+                            </div>
+                            <div>
+                                <div class="demo-stat-num"
+                                    style="color:#f97316;text-shadow:0 0 20px rgba(249,115,22,0.5)">3</div>
+                                <div class="demo-stat-label">Goals due soon</div>
+                            </div>
                         </div>
                     </div>
-
-                    {{-- Goals + Resources --}}
-                    <div class="demo-dash-columns">
-
-                        <div class="demo-dash-col">
+                    <div class="demo-dash-cols">
+                        <div>
                             <div class="demo-col-heading">Goals</div>
-                            <div class="demo-goal-row">
-                                <span class="demo-goal-check demo-goal-done" aria-label="completed"></span>
-                                <span class="demo-goal-label">Complete React course</span>
-                                <span class="demo-goal-date">Done</span>
-                            </div>
-                            <div class="demo-goal-row">
-                                <span class="demo-goal-check demo-goal-open" aria-label="pending"></span>
-                                <span class="demo-goal-label">Build Laravel API</span>
-                                <span class="demo-goal-date">Jun 15</span>
-                            </div>
-                            <div class="demo-goal-row">
-                                <span class="demo-goal-check demo-goal-open" aria-label="pending"></span>
-                                <span class="demo-goal-label">Ship public profile</span>
-                                <span class="demo-goal-date">Jun 30</span>
-                            </div>
-                            <div class="demo-goal-row">
-                                <span class="demo-goal-check demo-goal-open" aria-label="pending"></span>
-                                <span class="demo-goal-label">Learn TypeScript basics</span>
-                                <span class="demo-goal-date">Jul 10</span>
-                            </div>
+                            <div class="demo-goal-row"><span class="demo-goal-check demo-goal-done-check"></span><span
+                                    class="demo-goal-label demo-goal-label-done">Complete React course</span><span
+                                    class="demo-goal-date demo-goal-date-done">Done</span></div>
+                            <div class="demo-goal-row"><span class="demo-goal-check"></span><span
+                                    class="demo-goal-label">Build Laravel API</span><span class="demo-goal-date">Jun
+                                    15</span></div>
+                            <div class="demo-goal-row"><span class="demo-goal-check"></span><span
+                                    class="demo-goal-label">Ship public profile</span><span class="demo-goal-date">Jun
+                                    30</span></div>
+                            <div class="demo-goal-row"><span class="demo-goal-check"></span><span
+                                    class="demo-goal-label">Learn TypeScript basics</span><span
+                                    class="demo-goal-date">Jul 10</span></div>
                         </div>
-
-                        <div class="demo-dash-col">
+                        <div>
                             <div class="demo-col-heading">Saved Resources</div>
-                            <div class="demo-log-row">
-                                <span class="demo-log-dot" style="background: #7c6af0;"></span>
-                                <div class="demo-log-content">
-                                    <div class="demo-log-title">React docs — useEffect</div>
-                                    <div class="demo-log-meta">docs &middot; React</div>
+                            <div class="log-row"><span class="log-dot"
+                                    style="background:#a855f7;box-shadow:0 0 8px #a855f7"></span>
+                                <div>
+                                    <div class="log-title">React docs — useEffect</div>
+                                    <div class="log-meta">docs · React</div>
                                 </div>
                             </div>
-                            <div class="demo-log-row">
-                                <span class="demo-log-dot" style="background: #c4785a;"></span>
-                                <div class="demo-log-content">
-                                    <div class="demo-log-title">Laracasts — Livewire v3</div>
-                                    <div class="demo-log-meta">video &middot; Laravel</div>
+                            <div class="log-row"><span class="log-dot"
+                                    style="background:#f97316;box-shadow:0 0 8px #f97316"></span>
+                                <div>
+                                    <div class="log-title">Laracasts — Livewire v3</div>
+                                    <div class="log-meta">video · Laravel</div>
                                 </div>
                             </div>
-                            <div class="demo-log-row">
-                                <span class="demo-log-dot" style="background: #9b92b8;"></span>
-                                <div class="demo-log-content">
-                                    <div class="demo-log-title">Vue 3 migration guide</div>
-                                    <div class="demo-log-meta">article &middot; Vue 3</div>
+                            <div class="log-row"><span class="log-dot"
+                                    style="background:#41b883;box-shadow:0 0 6px #41b883"></span>
+                                <div>
+                                    <div class="log-title">Vue 3 migration guide</div>
+                                    <div class="log-meta">article · Vue 3</div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
-            <div class="welcome-demo-cta pt-6 flex justify-center">
-                <a href="{{ route('register') }}" class="btn-primary btn-lg">Get Started — it's free →</a>
+
+            {{-- Glow CTA --}}
+            <div class="glow-btn-wrap">
+                <a href="{{ route('register') }}" class="glow-btn">Get Started — it's free →</a>
             </div>
+
         </section>
 
     </body>

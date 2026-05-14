@@ -1,29 +1,39 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+    <div class="max-w-2xl mx-auto space-y-4">
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+        {{-- Profile Information --}}
+        <div class="dash-card">
+            <h2 class="text-white font-bold text-lg mb-1" style="font-family:'Space Grotesk',sans-serif">
+                Profile Information
+            </h2>
+            <p class="text-xs mb-6" style="color:#8b7fa8">Update your name, username, bio and email address.</p>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+            @include('profile.partials.update-profile-information-form')
         </div>
+
+        {{-- Update Password --}}
+        <div class="dash-card">
+            <h2 class="text-white font-bold text-lg mb-1" style="font-family:'Space Grotesk',sans-serif">
+                Update Password
+            </h2>
+            <p class="text-xs mb-6" style="color:#8b7fa8">Use a long, random password to keep your account secure.</p>
+
+            @include('profile.partials.update-password-form')
+        </div>
+
+        {{-- Danger Zone --}}
+        <div class="dash-card" style="border-color:rgba(244,63,94,0.2)">
+            <h2 class="text-sm font-bold mb-1" style="font-family:'Space Grotesk',sans-serif;color:#f43f5e">
+                Danger Zone
+            </h2>
+            <p class="text-xs mb-4" style="color:#8b7fa8">
+                Once your account is deleted, all data will be permanently removed. This cannot be undone.
+            </p>
+
+            @include('profile.partials.delete-user-form')
+        </div>
+
     </div>
+
 </x-app-layout>
