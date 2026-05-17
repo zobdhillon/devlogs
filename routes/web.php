@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\LogController;
@@ -10,8 +11,13 @@ use App\Http\Controllers\TopicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
     return view('welcome');
 });
+
+Route::post('/ai/insights', [AiController::class, 'insights'])->middleware('auth');
 
 Route::get('/u/{username}', [PublicProfileController::class, 'show'])->name('profile.public');
 

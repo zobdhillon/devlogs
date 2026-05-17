@@ -43,6 +43,54 @@
         </div>
     </div>
 
+    {{-- AI Insights Widget --}}
+    <div class="dash-card mt-6 mb-6" x-data="{ loading: false, insights: '', error: '' }">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <span style="font-size:1.3rem">🤖</span>
+                <h3 class="text-sm font-semibold tracking-widest uppercase" style="color:#8b7fa8">AI Insights</h3>
+            </div>
+            <button class="dash-add-btn"
+                @click="
+                loading = true;
+                insights = '';
+                error = '';
+                fetch('/ai/insights', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(r => r.json())
+                .then(d => { insights = d.insights; loading = false; })
+                .catch(() => { error = 'Failed to load insights.'; loading = false; })
+            "
+                :disabled="loading">
+                <span x-show="!loading">✨ Generate</span>
+                <span x-show="loading">Thinking...</span>
+            </button>
+        </div>
+
+        <div x-show="loading" class="text-sm" style="color:#8b7fa8">
+            Analyzing your learning activity...
+        </div>
+
+        <div x-show="insights" class="text-sm leading-relaxed space-y-3" style="color:#f0ece8"
+            x-html="insights
+        .replace(/\*\*(.*?)\*\*/g, '<span style=\'color:#a855f7;font-weight:700;display:block;margin-top:0.75rem\'>$1</span>')
+        .replace(/•/g, '<span style=\'color:#f97316\'>•</span>')
+        .replace(/\n/g, '<br>')
+    ">
+        </div>
+
+        <div x-show="error" class="text-sm" style="color:#f97316" x-text="error"></div>
+
+        <p x-show="!insights && !loading && !error" class="text-sm" style="color:#8b7fa8">
+            Click Generate to get personalized learning insights powered by AI.
+        </p>
+    </div>
+
     {{-- Topics + Logs --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
 
@@ -119,7 +167,8 @@
                         ? 'background:#7c3aed;border:1.5px solid #7c3aed;box-shadow:0 0 8px rgba(124,58,237,0.4)'
                         : 'background:transparent;border:1.5px solid rgba(168,85,247,0.4)' }}">
                     @if ($goal->is_completed)
-                        <svg class="w-2.5 h-2.5" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="3">
+                        <svg class="w-2.5 h-2.5" fill="none" stroke="white" viewBox="0 0 24 24"
+                            stroke-width="3">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                     @endif
