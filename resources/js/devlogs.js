@@ -23,7 +23,7 @@ export function fadeRemove(id) {
 
 export function deleteRecord(resource, id) {
     axios
-        .delete(`/${resource}/${id}`)
+        .post(`/${resource}/${id}`, { _method: "DELETE" })
         .then(() => {
             fadeRemove(`${resource.slice(0, -1)}-${id}`);
             showToast(`${resource.slice(0, -1)} deleted`);
@@ -35,7 +35,7 @@ export function deleteRecord(resource, id) {
 
 export function toggleGoal(id) {
     axios
-        .put(`/goals/${id}`, { toggle_complete: 1 })
+        .post(`/goals/${id}`, { toggle_complete: 1, _method: "PUT" })
         .then(({ data }) => {
             if (!data.ok) return;
 

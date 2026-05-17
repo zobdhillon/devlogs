@@ -15,6 +15,10 @@ class AiController extends Controller
         $logs = $user->logs()->latest()->take(5)->get(['title', 'body', 'mood'])->toArray();
         $goals = $user->goals()->where('is_completed', false)->take(5)->get(['title'])->toArray();
 
+        if (empty($topics) && empty($logs) && empty($goals)) {
+            return response()->json(['insights' => 'Add some topics and logs first to get personalized insights!']);
+        }
+
         $prompt = "You are a personal learning coach for a developer named " . $user->name . ".
 
         Here is their current learning data:
@@ -44,6 +48,8 @@ class AiController extends Controller
         - Be encouraging and warm, never critical or harsh
         - Focus on what they are doing well, then gently suggest improvements
         - Tone should be like a supportive mentor, not a strict coach
+        - If data seems empty or minimal, acknowledge it honestly and encourage them to log more activity
+        - Never invent or assume data that isn't provided
         - No markdown except the ** headers and bullet points";
 
         $response = Http::withHeaders([
