@@ -1,4 +1,4 @@
-<div class="px-4 pt-4 pb-2 flex justify-center" x-data="{ open: false, dropOpen: false }">
+<div class="px-4 pt-4 pb-2 flex justify-center" x-data="{ open: false }">
     <nav class="app-nav">
         <x-logo-sm />
 
@@ -16,8 +16,8 @@
         </div>
 
         {{-- Avatar dropdown --}}
-        <div class="hidden sm:flex items-center relative" @click.outside="dropOpen = false">
-            <button class="nav-user-btn" @click="dropOpen = !dropOpen">
+        <div class="hidden sm:flex items-center relative" x-data="{ dropOpen: false }" @click.outside="dropOpen = false">
+            <button type="button" class="nav-user-btn" @click.stop="dropOpen = !dropOpen">
                 <div style="position:relative;flex-shrink:0;">
                     <div
                         style="width:32px;height:32px;border-radius:50%;background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#a855f7;">
@@ -34,10 +34,10 @@
                 </svg>
             </button>
 
-            <div x-show="dropOpen" x-transition:enter="transition ease-out duration-150"
-                x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
-                x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
+            <div x-show="dropOpen" x-cloak x-transition:enter="transition ease-out duration-150"
+                x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95" x-transition.origin.top.right
                 class="absolute right-0 top-full mt-2 w-44 rounded-xl overflow-hidden"
                 style="background:rgba(8,6,15,0.98);border:1px solid rgba(168,85,247,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.8);backdrop-filter:blur(20px);z-index:9999;">
 
@@ -89,41 +89,41 @@
                     </button>
                 </form>
             </div>
-        </div>
+</div>
 
-        {{-- Mobile hamburger --}}
-        <div class="flex items-center sm:hidden">
-            <button @click="open = !open" class="nav-hamburger">
-                <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                    <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-    </nav>
+{{-- Mobile hamburger --}}
+<div class="flex items-center sm:hidden">
+    <button @click="open = !open" class="nav-hamburger">
+        <svg class="h-5 w-5" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
+                stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+</div>
+</nav>
 
-    {{-- Mobile Menu --}}
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden nav-mobile">
-        <div class="space-y-1 px-4 py-3">
-            <a href="{{ route('dashboard') }}" class="nav-mobile-link">Dashboard</a>
-            <a href="{{ route('topics.index') }}" class="nav-mobile-link">Topics</a>
-            <a href="{{ route('logs.index') }}" class="nav-mobile-link">Logs</a>
-            <a href="{{ route('goals.index') }}" class="nav-mobile-link">Goals</a>
-            <a href="{{ route('resources.index') }}" class="nav-mobile-link">Resources</a>
-        </div>
-        <div class="px-4 py-3 border-t" style="border-color:rgba(255,255,255,0.1)">
-            <div class="text-sm font-medium" style="color:#f0ece8">{{ Auth::user()->name }}</div>
-            <div class="text-xs mt-0.5" style="color:#8b7fa8">&#64;{{ Auth::user()->username }}</div>
-            <div class="mt-3 space-y-1">
-                <a href="{{ route('profile.edit') }}" class="nav-mobile-link">Profile</a>
-                <a href="/u/{{ Auth::user()->username }}" class="nav-mobile-link">Public Profile</a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="nav-mobile-link w-full text-left">Log Out</button>
-                </form>
-            </div>
+{{-- Mobile Menu --}}
+<div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden nav-mobile">
+    <div class="space-y-1 px-4 py-3">
+        <a href="{{ route('dashboard') }}" class="nav-mobile-link">Dashboard</a>
+        <a href="{{ route('topics.index') }}" class="nav-mobile-link">Topics</a>
+        <a href="{{ route('logs.index') }}" class="nav-mobile-link">Logs</a>
+        <a href="{{ route('goals.index') }}" class="nav-mobile-link">Goals</a>
+        <a href="{{ route('resources.index') }}" class="nav-mobile-link">Resources</a>
+    </div>
+    <div class="px-4 py-3 border-t" style="border-color:rgba(255,255,255,0.1)">
+        <div class="text-sm font-medium" style="color:#f0ece8">{{ Auth::user()->name }}</div>
+        <div class="text-xs mt-0.5" style="color:#8b7fa8">&#64;{{ Auth::user()->username }}</div>
+        <div class="mt-3 space-y-1">
+            <a href="{{ route('profile.edit') }}" class="nav-mobile-link">Profile</a>
+            <a href="/u/{{ Auth::user()->username }}" class="nav-mobile-link">Public Profile</a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="nav-mobile-link w-full text-left">Log Out</button>
+            </form>
         </div>
     </div>
+</div>
 </div>

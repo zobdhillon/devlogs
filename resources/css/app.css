@@ -1078,3 +1078,11 @@ input[type="checkbox"]:focus {
 .auth-input-username {
     padding-left: 26px;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.5);
+}
+
+[x-cloak] {
+    display: none !important;
+}
