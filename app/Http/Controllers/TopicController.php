@@ -48,7 +48,7 @@ class TopicController extends Controller
             'progress' => 'required|integer|min:0|max:100',
         ]);
 
-        $topic->update($request->only('name', 'color', 'status'));
+        $topic->update($request->only('name', 'color', 'icon', 'status', 'progress'));
 
         return redirect()->route('topics.index')->with('success', 'Topic updated');
     }
