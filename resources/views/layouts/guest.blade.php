@@ -5,20 +5,16 @@
         @include('layouts.head')
     </head>
 
-    <body class="page auth-page">
-        <div class="orb orb-tl" aria-hidden="true"></div>
-        <div class="orb orb-tr" aria-hidden="true"></div>
-        <div class="orb orb-br" aria-hidden="true"></div>
-
-        <div class="auth-wrap">
-            <div class="auth-brand">
+    <body class="flex min-h-screen items-center justify-center bg-canvas px-6 py-8">
+        <div class="w-full max-w-md">
+            <div class="mb-8 flex flex-col items-center gap-2 text-center">
                 <x-logo-sm />
-                <p class="auth-brand-sub">Track your learning journey</p>
+                <p class="text-sm text-gray-400">Track your learning journey</p>
             </div>
-            <div class="auth-card">
+            <x-ui.card>
                 {{ $slot }}
-            </div>
-            <p class="auth-footer">Built for developers, by developers 💜</p>
+            </x-ui.card>
+            <p class="mt-5 text-center text-xs text-gray-500">Built for developers, by developers</p>
         </div>
     </body>
 

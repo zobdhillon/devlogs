@@ -1,6 +1,7 @@
+
 <x-app-layout>
 
-    <div class="dash-card max-w-2xl mx-auto" x-data="{
+    <x-ui.card class="mx-auto max-w-2xl" x-data="{
         open: false,
         selectedId: '{{ old('topic_id', $goal->topic_id ?? '') }}',
         selectedName: 'No topic',
@@ -14,86 +15,63 @@
         }
     }"
         data-topics="{{ $topics->map(fn($t) => ['id' => $t->id, 'name' => $t->name, 'color' => $t->color])->toJson() }}">
-
-        {{-- Header --}}
-        <div class="flex items-center gap-3 mb-6">
-            <a href="{{ route('goals.index') }}" class="text-sm transition-colors duration-150" style="color:#8b7fa8"
-                onmouseover="this.style.color='#a855f7'" onmouseout="this.style.color='#8b7fa8'">← Back</a>
-            <h2 class="text-white font-bold text-lg" style="font-family:'Space Grotesk',sans-serif">
-                Edit Goal
-            </h2>
+        <div class="mb-6 flex items-center gap-3">
+            <a href="{{ route('goals.index') }}" class="inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-accent">
+                <x-icon name="arrow-left" class="h-4 w-4" /> Back
+            </a>
+            <h2 class="font-display text-lg font-bold text-gray-100">Edit Goal</h2>
         </div>
 
         <form method="POST" action="{{ route('goals.update', $goal) }}" class="space-y-5">
             @csrf
             @method('PUT')
 
-            {{-- Title --}}
             <div>
-                <label class="auth-label">Goal</label>
-                <input type="text" name="title" value="{{ old('title', $goal->title) }}"
-                    placeholder="e.g. Finish Laravel API" required class="auth-input w-full" />
+                <x-ui.label>Goal</x-ui.label>
+                <x-ui.input type="text" name="title" value="{{ old('title', $goal->title) }}"
+                    placeholder="e.g. Finish Laravel API" required />
                 @error('title')
-                    <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+                    <p class="mt-1 text-xs text-rose-400">{{ $message }}</p>
                 @enderror
             </div>
 
-            {{-- Topic + Deadline row --}}
-            <div class="flex gap-3 flex-wrap">
-
-                {{-- Topic --}}
-                <div class="relative flex-1 min-w-48" @click.outside="open = false">
-                    <label class="auth-label">Topic <span style="color:#8b7fa8">(optional)</span></label>
+            <div class="flex flex-wrap gap-3">
+                <div class="relative min-w-48 flex-1" @click.outside="open = false">
+                    <x-ui.label>Topic <span class="text-gray-500">(optional)</span></x-ui.label>
                     <input type="hidden" name="topic_id" :value="selectedId">
                     <button type="button" @click="open = !open"
-                        class="auth-input w-full flex items-center justify-between gap-2 cursor-pointer">
-                        <span x-text="selectedName" style="color:#f0ece8"></span>
-                        <svg class="w-4 h-4 flex-shrink-0 transition-transform duration-150"
-                            :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            style="color:#8b7fa8">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                        class="flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-sm text-gray-200">
+                        <span x-text="selectedName"></span>
+                        <span class="transition-transform" :class="open ? 'rotate-180' : ''">
+                            <x-icon name="chevron-down" class="h-4 w-4 text-gray-400" />
+                        </span>
                     </button>
-                    <div x-show="open" x-transition class="custom-select-dropdown">
+                    <div x-show="open" x-transition class="absolute left-0 top-[calc(100%+6px)] z-[999] w-full overflow-hidden rounded-lg border border-white/[0.06] bg-surface shadow-md">
                         <div @click="selectedId = ''; selectedName = 'No topic'; open = false"
-                            class="custom-select-option"
-                            :class="{ 'custom-select-option-active': selectedId === '' }">
-                            No topic
-                        </div>
+                            class="cursor-pointer px-3.5 py-2.5 text-sm capitalize text-gray-400 transition-colors hover:bg-white/[0.04] hover:text-gray-200" :class="{ 'bg-accent/10 text-gray-200': selectedId === '' }">No topic</div>
                         <template x-for="topic in topics" :key="topic.id">
                             <div @click="selectedId = topic.id; selectedName = topic.name; open = false"
-                                class="custom-select-option flex items-center gap-2"
-                                :class="{ 'custom-select-option-active': selectedId == topic.id }">
-                                <span class="w-2 h-2 rounded-full flex-shrink-0"
-                                    :style="`background:${topic.color}`"></span>
+                                class="cursor-pointer px-3.5 py-2.5 text-sm capitalize text-gray-400 transition-colors hover:bg-white/[0.04] hover:text-gray-200 flex items-center gap-2"
+                                :class="{ 'bg-accent/10 text-gray-200': selectedId == topic.id }">
+                                <span class="h-2 w-2 flex-shrink-0 rounded-full" :style="`background:${topic.color}`"></span>
                                 <span x-text="topic.name"></span>
                             </div>
                         </template>
                     </div>
                 </div>
 
-                {{-- Deadline --}}
                 <div>
-                    <label class="auth-label">Deadline <span style="color:#8b7fa8">(optional)</span></label>
-                    <input type="date" name="deadline"
-                        value="{{ old('deadline', $goal->deadline?->format('Y-m-d')) }}" class="auth-input w-40" />
+                    <x-ui.label>Deadline <span class="text-gray-500">(optional)</span></x-ui.label>
+                    <x-ui.input type="date" name="deadline" value="{{ old('deadline', $goal->deadline?->format('Y-m-d')) }}"
+                        class="w-40" />
                 </div>
             </div>
 
-            {{-- Actions --}}
             <div class="flex gap-3 pt-2">
-                <button type="submit" class="btn-primary px-6 py-2 rounded-xl text-sm font-semibold">
-                    Save Changes
-                </button>
-                <a href="{{ route('goals.index') }}"
-                    class="px-6 py-2 rounded-xl text-sm font-semibold transition-colors duration-150"
-                    style="color:#8b7fa8;border:1px solid rgba(168,85,247,0.15)"
-                    onmouseover="this.style.color='#f0ece8'" onmouseout="this.style.color='#8b7fa8'">
-                    Cancel
-                </a>
+                <x-ui.button-primary type="submit">Save Changes</x-ui.button-primary>
+                <a href="{{ route('goals.index') }}" class="inline-flex items-center gap-1 px-4 py-2 text-sm text-gray-400 transition-colors hover:text-accent">Cancel</a>
             </div>
         </form>
-
-    </div>
+    </x-ui.card>
 
 </x-app-layout>

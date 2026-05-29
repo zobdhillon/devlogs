@@ -1,56 +1,48 @@
 <x-app-layout>
 
-    {{-- Greeting --}}
-    <div class="dash-card flex justify-between items-center mb-4">
+    <x-ui.card class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <h1 class="font-bold text-2xl text-white mb-1">{{ $greeting }}, {{ Auth::user()->name }} 👋</h1>
-            <p class="text-sm" style="color:#8b7fa8">You've logged {{ $logsThisWeek }}
+            <h1 class="mb-1 flex items-center gap-2 font-display text-2xl font-bold text-gray-100">
+                {{ $greeting }}, {{ Auth::user()->name }}
+            </h1>
+            <p class="text-sm text-gray-400">You've logged {{ $logsThisWeek }}
                 {{ Str::plural('entry', $logsThisWeek) }} this week. Keep it up!</p>
         </div>
-        <div class="dash-streak text-center">
-            <div class="dash-streak-num">🔥 {{ $logsThisWeek }}</div>
-            <div class="text-xs mt-1" style="color:#8b7fa8">this week</div>
-        </div>
-    </div>
-
-    {{-- Stats --}}
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-        <div class="dash-card">
-            <div class="text-lg mb-2">📚</div>
-            <div class="text-xs uppercase tracking-wider mb-1" style="color:#8b7fa8">Active Topics</div>
-            <div class="text-3xl font-bold"
-                style="font-family:'Space Grotesk',sans-serif;color:#a855f7;text-shadow:0 0 16px rgba(168,85,247,0.4)">
-                {{ $stats['topics'] }}</div>
-        </div>
-        <div class="dash-card">
-            <div class="text-lg mb-2">📝</div>
-            <div class="text-xs uppercase tracking-wider mb-1" style="color:#8b7fa8">Total Logs</div>
-            <div class="text-3xl font-bold text-white" style="font-family:'Space Grotesk',sans-serif">
-                {{ $stats['logs'] }}</div>
-        </div>
-        <div class="dash-card">
-            <div class="text-lg mb-2">🎯</div>
-            <div class="text-xs uppercase tracking-wider mb-1" style="color:#8b7fa8">Goals</div>
-            <div class="text-3xl font-bold"
-                style="font-family:'Space Grotesk',sans-serif;color:#f97316;text-shadow:0 0 16px rgba(249,115,22,0.4)">
-                {{ $stats['goals'] }}</div>
-        </div>
-        <div class="dash-card">
-            <div class="text-lg mb-2">🔗</div>
-            <div class="text-xs uppercase tracking-wider mb-1" style="color:#8b7fa8">Resources</div>
-            <div class="text-3xl font-bold text-white" style="font-family:'Space Grotesk',sans-serif">
-                {{ $stats['resources'] }}</div>
-        </div>
-    </div>
-
-    {{-- AI Insights Widget --}}
-    <div class="dash-card mt-6 mb-6" x-data="{ loading: false, insights: '', error: '' }">
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-                <span style="font-size:1.3rem">🤖</span>
-                <h3 class="text-sm font-semibold tracking-widest uppercase" style="color:#8b7fa8">AI Insights</h3>
+        <div class="rounded-lg border border-white/[0.06] bg-white/[0.02] px-5 py-3 text-center">
+            <div class="flex items-center justify-center gap-1.5 font-display text-2xl font-bold text-accent">
+                <x-icon name="flame" class="h-5 w-5" />
+                {{ $logsThisWeek }}
             </div>
-            <button class="dash-add-btn"
+            <div class="mt-1 text-xs text-gray-400">this week</div>
+        </div>
+    </x-ui.card>
+
+    <div class="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        @foreach ([
+            ['icon' => 'book-open', 'label' => 'Active Topics', 'value' => $stats['topics'], 'accent' => true],
+            ['icon' => 'file-text', 'label' => 'Total Logs', 'value' => $stats['logs'], 'accent' => false],
+            ['icon' => 'target', 'label' => 'Goals', 'value' => $stats['goals'], 'accent' => true],
+            ['icon' => 'link', 'label' => 'Resources', 'value' => $stats['resources'], 'accent' => false],
+        ] as $stat)
+            <x-ui.card>
+                <x-icon :name="$stat['icon']" class="mb-3 h-5 w-5 text-gray-500" />
+                <div class="mb-1 text-xs uppercase tracking-wider text-gray-400">{{ $stat['label'] }}</div>
+                <div @class([
+                    'font-display text-3xl font-bold',
+                    'text-accent' => $stat['accent'],
+                    'text-gray-100' => ! $stat['accent'],
+                ])>{{ $stat['value'] }}</div>
+            </x-ui.card>
+        @endforeach
+    </div>
+
+    <x-ui.card class="mb-6 mt-6" x-data="{ loading: false, insights: '', error: '' }">
+        <div class="mb-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <x-icon name="bot" class="h-5 w-5 text-gray-500" />
+                <h3 class="text-sm font-semibold uppercase tracking-widest text-gray-400">AI Insights</h3>
+            </div>
+            <button type="button" class="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15" :disabled="loading"
                 @click="
                 loading = true;
                 insights = '';
@@ -65,162 +57,134 @@
                 .then(r => r.json())
                 .then(d => { insights = d.insights; loading = false; })
                 .catch(() => { error = 'Failed to load insights.'; loading = false; })
-            "
-                :disabled="loading">
-                <span x-show="!loading">✨ Generate</span>
+            ">
+                <span x-show="!loading" class="inline-flex items-center gap-1">
+                    <x-icon name="sparkles" class="h-3.5 w-3.5" /> Generate
+                </span>
                 <span x-show="loading">Thinking...</span>
             </button>
         </div>
 
-        <div x-show="loading" class="text-sm" style="color:#8b7fa8">
-            Analyzing your learning activity...
-        </div>
+        <div x-show="loading" class="text-sm text-gray-400">Analyzing your learning activity...</div>
 
-        <div x-show="insights" class="text-sm leading-relaxed space-y-3" style="color:#f0ece8"
-            x-html="insights
-        .replace(/\*\*(.*?)\*\*/g, '<span style=\'color:#a855f7;font-weight:700;display:block;margin-top:0.75rem\'>$1</span>')
-        .replace(/•/g, '<span style=\'color:#f97316\'>•</span>')
+        <div x-show="insights" class="space-y-3 text-sm leading-relaxed text-gray-200" x-html="insights
+        .replace(/\*\*(.*?)\*\*/g, '<span class=\'font-semibold text-accent block mt-3\'>$1</span>')
+        .replace(/•/g, '<span class=\'text-accent\'>•</span>')
         .replace(/\n/g, '<br>')
-    ">
-        </div>
+    "></div>
 
-        <div x-show="error" class="text-sm" style="color:#f97316" x-text="error"></div>
+        <div x-show="error" class="text-sm text-rose-400" x-text="error"></div>
 
-        <p x-show="!insights && !loading && !error" class="text-sm" style="color:#8b7fa8">
+        <p x-show="!insights && !loading && !error" class="text-sm text-gray-400">
             Click Generate to get personalized learning insights powered by AI.
         </p>
-    </div>
+    </x-ui.card>
 
-    {{-- Topics + Logs --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+    <div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-        {{-- Topics --}}
-
-        <div class="dash-card" @click="window.location='{{ route('topics.index') }}'">
-            <div class="flex justify-between items-center mb-4">
-                <span class="font-bold text-white" style="font-family:'Space Grotesk',sans-serif">Active Topics</span>
-                <a href="{{ route('topics.index') }}" class="dash-add-btn">+ Add topic</a>
+        <x-ui.card class="cursor-pointer" @click="window.location='{{ route('topics.index') }}'">
+            <div class="mb-4 flex items-center justify-between">
+                <span class="font-display font-bold text-gray-100">Active Topics</span>
+                <a href="{{ route('topics.index') }}" class="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15" @click.stop>+ Add topic</a>
             </div>
             @forelse($topics as $topic)
-                <div class="flex items-center gap-3 py-2 border-b" style="border-color:rgba(168,85,247,0.08)">
-                    {{-- Icon --}}
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                        style="background:{{ $topic->color }}18;border:1px solid {{ $topic->color }}33;">
+                <div class="border-b border-white/[0.06] flex items-center gap-3 py-2 last:border-0">
+                    <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg border"
+                        style="background:{{ $topic->color }}18;border-color:{{ $topic->color }}33;">
                         <i class="{{ $topic->icon ?? 'devicon-code-plain' }} text-base"
                             style="color:{{ $topic->color }}"></i>
                     </div>
-
-                    {{-- Name --}}
-                    <span class="text-sm font-medium flex-1" style="color:#f0ece8">{{ $topic->name }}</span>
-
-                    {{-- Progress bar --}}
-                    <div class="flex items-center gap-2 w-28">
-                        <div class="flex-1 h-1.5 rounded-full" style="background:rgba(168,85,247,0.1)">
-                            <div class="h-full rounded-full"
-                                style="width:{{ $topic->progress }}%;background:{{ $topic->color }};box-shadow:0 0 6px {{ $topic->color }}">
-                            </div>
+                    <span class="flex-1 text-sm font-medium text-gray-200">{{ $topic->name }}</span>
+                    <div class="flex w-28 items-center gap-2">
+                        <div class="h-1.5 flex-1 rounded-full bg-white/[0.06]">
+                            <div class="h-full rounded-full" style="width:{{ $topic->progress }}%;background:{{ $topic->color }}"></div>
                         </div>
-                        <span class="text-xs w-8 text-right" style="color:#8b7fa8">{{ $topic->progress }}%</span>
+                        <span class="w-8 text-right text-xs text-gray-400">{{ $topic->progress }}%</span>
                     </div>
                 </div>
             @empty
-                <p class="text-sm py-2" style="color:#8b7fa8">No active topics yet. </p>
+                <p class="py-2 text-sm text-gray-400">No active topics yet.</p>
             @endforelse
-        </div>
+        </x-ui.card>
 
-        {{-- Logs --}}
-        <div class="dash-card" @click="window.location='{{ route('logs.index') }}'">
-            <div class="flex justify-between items-center mb-4">
-                <span class="font-bold text-white" style="font-family:'Space Grotesk',sans-serif">Recent Logs</span>
-                <a href="{{ route('logs.create') }}" class="dash-add-btn">+ New log</a>
+        <x-ui.card class="cursor-pointer" @click="window.location='{{ route('logs.index') }}'">
+            <div class="mb-4 flex items-center justify-between">
+                <span class="font-display font-bold text-gray-100">Recent Logs</span>
+                <a href="{{ route('logs.create') }}" class="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15" @click.stop>+ New log</a>
             </div>
             @forelse($logs as $log)
-                <div class="py-2 border-b" style="border-color:rgba(168,85,247,0.08)">
-                    <div class="text-sm mb-1" style="color:#f0ece8">{{ $log->title }}</div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs" style="color:#8b7fa8">{{ $log->created_at->diffForHumans() }}</span>
-                        <span>{{ ['😞', '😐', '🙂', '😊', '🔥'][$log->mood - 1] }}</span>
+                <div class="border-b border-white/[0.06] py-2 last:border-0">
+                    <div class="mb-1 text-sm text-gray-200">{{ $log->title }}</div>
+                    <div class="flex items-center gap-2 text-xs text-gray-400">
+                        <span>{{ $log->created_at->diffForHumans() }}</span>
+                        <x-mood-icon :level="$log->mood" class="h-3.5 w-3.5 text-gray-500" />
                     </div>
                 </div>
             @empty
-                <p class="text-sm py-2" style="color:#8b7fa8">No logs yet. Start journaling!</p>
+                <p class="py-2 text-sm text-gray-400">No logs yet. Start journaling!</p>
             @endforelse
-        </div>
+        </x-ui.card>
 
     </div>
 
-    {{-- Goals --}}
-    <div class="dash-card" @click="window.location='{{ route('goals.index') }}'">
-        <div class="flex justify-between items-center mb-4">
-            <span class="font-bold text-white" style="font-family:'Space Grotesk',sans-serif">Goals</span>
-            <a href="{{ route('goals.index') }}" class="dash-add-btn">+ Add goal</a>
+    <x-ui.card class="cursor-pointer" @click="window.location='{{ route('goals.index') }}'">
+        <div class="mb-4 flex items-center justify-between">
+            <span class="font-display font-bold text-gray-100">Goals</span>
+            <a href="{{ route('goals.index') }}" class="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15" @click.stop>+ Add goal</a>
         </div>
         @forelse($goals as $goal)
-            <div id="dash-goal-{{ $goal->id }}" class="flex items-center gap-3 py-2 border-b"
-                style="border-color:rgba(168,85,247,0.08)">
-
-                {{-- Toggle button --}}
-                <button type="button" id="dash-goal-toggle-{{ $goal->id }}"
-                    onclick="toggleGoal({{ $goal->id }})"
-                    class="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-all duration-150"
-                    style="{{ $goal->is_completed
-                        ? 'background:#7c3aed;border:1.5px solid #7c3aed;box-shadow:0 0 8px rgba(124,58,237,0.4)'
-                        : 'background:transparent;border:1.5px solid rgba(168,85,247,0.4)' }}">
+            <div id="dash-goal-{{ $goal->id }}" class="border-b border-white/[0.06] flex items-center gap-3 py-2 last:border-0">
+                <button type="button" id="dash-goal-toggle-{{ $goal->id }}" onclick="toggleGoal({{ $goal->id }})"
+                    @class([
+                        'flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border transition-colors',
+                        'border-accent bg-accent' => $goal->is_completed,
+                        'border-accent/40 bg-transparent' => ! $goal->is_completed,
+                    ])>
                     @if ($goal->is_completed)
-                        <svg class="w-2.5 h-2.5" fill="none" stroke="white" viewBox="0 0 24 24"
-                            stroke-width="3">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
+                        <x-icon name="check" class="h-2.5 w-2.5 text-white" />
                     @endif
                 </button>
-
-                <span id="dash-goal-title-{{ $goal->id }}" class="text-sm flex-1"
-                    style="color:{{ $goal->is_completed ? '#8b7fa8' : '#f0ece8' }};
-                       text-decoration:{{ $goal->is_completed ? 'line-through' : 'none' }}">
-                    {{ $goal->title }}
-                </span>
-
-                <span class="text-xs" style="color:{{ $goal->is_completed ? '#a855f7' : '#8b7fa8' }}">
-                    {{ $goal->is_completed ? 'Done ✓' : ($goal->deadline ? \Carbon\Carbon::parse($goal->deadline)->format('M d') : '—') }}
+                <span id="dash-goal-title-{{ $goal->id }}" @class([
+                    'flex-1 text-sm',
+                    'text-gray-400 line-through' => $goal->is_completed,
+                    'text-gray-200' => ! $goal->is_completed,
+                ])>{{ $goal->title }}</span>
+                <span @class([
+                    'text-xs',
+                    'text-accent' => $goal->is_completed,
+                    'text-gray-400' => ! $goal->is_completed,
+                ])>
+                    {{ $goal->is_completed ? 'Done' : ($goal->deadline ? \Carbon\Carbon::parse($goal->deadline)->format('M d') : '—') }}
                 </span>
             </div>
         @empty
-            <p class="text-sm py-2" style="color:#8b7fa8">No goals yet. Set your first goal!</p>
+            <p class="py-2 text-sm text-gray-400">No goals yet. Set your first goal!</p>
         @endforelse
-    </div>
+    </x-ui.card>
 
-    {{-- Resources --}}
-    <div class="dash-card" style="margin-top:1rem;" x-data @click="window.location='{{ route('resources.index') }}'"
-        style="cursor:pointer">
-        <div class="flex justify-between items-center mb-4">
-            <span class="font-bold text-white" style="font-family:'Space Grotesk',sans-serif">Recent Resources</span>
-            <a href="{{ route('resources.index') }}" class="dash-add-btn" @click.stop>+ Add resource</a>
+    <x-ui.card class="mt-4 cursor-pointer" @click="window.location='{{ route('resources.index') }}'">
+        <div class="mb-4 flex items-center justify-between">
+            <span class="font-display font-bold text-gray-100">Recent Resources</span>
+            <a href="{{ route('resources.index') }}" class="rounded-md border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-medium text-accent transition-colors hover:bg-accent/15" @click.stop>+ Add resource</a>
         </div>
         @forelse($resources as $resource)
-            @php
-                $badgeStyles = [
-                    'video' => 'background:rgba(249,115,22,0.15);color:rgba(249,115,22,1);',
-                    'article' => 'background:rgba(168,85,247,0.15);color:rgba(168,85,247,1);',
-                    'course' => 'background:rgba(34,197,94,0.15);color:rgba(34,197,94,1);',
-                    'docs' => 'background:rgba(59,130,246,0.15);color:rgba(59,130,246,1);',
-                ];
-            @endphp
-            <div class="flex items-center gap-3 py-2 border-b" style="border-color:rgba(168,85,247,0.08)">
-                <span class="dash-badge" style="{{ $badgeStyles[$resource->type] ?? '' }}">
+            <div class="border-b border-white/[0.06] flex items-center gap-3 py-2 last:border-0">
+                <span class="rounded-md px-2 py-0.5 text-[10px] font-medium {{ match($resource->type) { 'video' => 'bg-accent/10 text-accent', 'article' => 'bg-white/[0.06] text-gray-300', 'course' => 'bg-emerald-500/10 text-emerald-400', 'docs' => 'bg-sky-500/10 text-sky-400', default => 'bg-white/[0.06] text-gray-400' } }}">
                     {{ ucfirst($resource->type) }}
                 </span>
-                <a href="{{ $resource->url }}" target="_blank" rel="noopener noreferrer" class="text-sm flex-1"
-                    style="color:#f0ece8;text-decoration:none;" @click.stop
-                    onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                <a href="{{ $resource->url }}" target="_blank" rel="noopener noreferrer"
+                    class="flex-1 text-sm text-gray-200 hover:underline" @click.stop>
                     {{ $resource->title }}
                 </a>
                 @if ($resource->topic)
-                    <span class="dash-badge dash-badge-active" @click.stop>{{ $resource->topic->name }}</span>
+                    <span class="rounded-md bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent" @click.stop>
+                        {{ $resource->topic->name }}
+                    </span>
                 @endif
             </div>
         @empty
-            <p class="text-sm py-2" style="color:#8b7fa8">No resources yet.</p>
+            <p class="py-2 text-sm text-gray-400">No resources yet.</p>
         @endforelse
-    </div>
+    </x-ui.card>
 
 </x-app-layout>

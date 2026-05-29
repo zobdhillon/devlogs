@@ -50,23 +50,24 @@ export function toggleGoal(id) {
             if (!btn || !title) return;
 
             if (completed) {
-                btn.style.background = "#7c3aed";
-                btn.style.borderColor = "#7c3aed";
-                btn.style.boxShadow = "0 0 8px rgba(124,58,237,0.4)";
-                btn.innerHTML = `<svg class="w-3 h-3" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="3">
+                btn.className =
+                    "flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border border-accent bg-accent transition-colors";
+                btn.innerHTML = `<svg class="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                  </svg>`;
             } else {
-                btn.style.background = "transparent";
-                btn.style.borderColor = "rgba(168,85,247,0.4)";
-                btn.style.boxShadow = "none";
+                btn.className =
+                    "flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border border-accent/40 bg-transparent transition-colors";
                 btn.innerHTML = "";
             }
 
-            title.style.color = completed ? "#8b7fa8" : "#f0ece8";
-            title.style.textDecoration = completed ? "line-through" : "none";
+            title.className = completed
+                ? "flex-1 text-sm text-gray-400 line-through"
+                : "flex-1 text-sm text-gray-200";
+            title.style.color = "";
+            title.style.textDecoration = "";
 
-            showToast(completed ? "Goal completed ✓" : "Goal reopened");
+            showToast(completed ? "Goal completed" : "Goal reopened");
         })
         .catch(() => showToast("Something went wrong", "error"));
 }

@@ -1,51 +1,38 @@
+
 <x-app-layout>
 
-    {{-- Markdown rendering --}}
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <div class="dash-card max-w-3xl mx-auto">
-
-        {{-- Header --}}
-        <div class="flex items-center justify-between mb-6">
+    <x-ui.card class="mx-auto max-w-3xl">
+        <div class="mb-6 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <a href="{{ route('logs.index') }}" class="text-sm transition-colors duration-150" style="color:#8b7fa8"
-                    onmouseover="this.style.color='#a855f7'" onmouseout="this.style.color='#8b7fa8'">← Back</a>
-                <h2 class="text-white font-bold text-lg" style="font-family:'Space Grotesk',sans-serif">
-                    {{ $log->title }}
-                </h2>
+                <a href="{{ route('logs.index') }}" class="inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-accent">
+                    <x-icon name="arrow-left" class="h-4 w-4" /> Back
+                </a>
+                <h2 class="font-display text-lg font-bold text-gray-100">{{ $log->title }}</h2>
             </div>
-            <a href="{{ route('logs.edit', $log) }}" class="topic-action-btn">Edit</a>
+            <a href="{{ route('logs.edit', $log) }}" class="rounded-md border border-white/[0.06] bg-white/[0.03] px-2.5 py-1 text-[11px] text-gray-400 transition-colors hover:bg-white/[0.05] hover:text-gray-200">Edit</a>
         </div>
 
-        {{-- Meta --}}
-        @php
-            $moodEmojis = [1 => '😴', 2 => '😑', 3 => '🤔', 4 => '😄', 5 => '⚡'];
-        @endphp
-        <div class="flex items-center gap-3 mb-6 flex-wrap">
+        <div class="mb-6 flex flex-wrap items-center gap-3">
             @if ($log->topic)
                 <span class="flex items-center gap-1.5 text-xs" style="color:{{ $log->topic->color }}">
-                    <span class="w-2 h-2 rounded-full"
-                        style="background:{{ $log->topic->color }};box-shadow:0 0 6px {{ $log->topic->color }}"></span>
+                    <span class="h-2 w-2 rounded-full" style="background:{{ $log->topic->color }}"></span>
                     {{ $log->topic->name }}
                 </span>
             @endif
-            <span class="text-xs" style="color:#8b7fa8">
-                {{ $log->created_at->format('M d, Y · g:i A') }}
-            </span>
-            <span class="text-base" title="Mood {{ $log->mood }}/5">
-                {{ $moodEmojis[$log->mood] ?? '🤔' }}
+            <span class="text-xs text-gray-400">{{ $log->created_at->format('M d, Y · g:i A') }}</span>
+            <span title="Mood {{ $log->mood }}/5">
+                <x-mood-icon :level="$log->mood" class="h-4 w-4 text-gray-400" />
             </span>
         </div>
 
-        {{-- Body --}}
-        <div id="log-body-rendered" class="prose prose-sm max-w-none" style="color:#f0ece8; line-height:1.8;">
-        </div>
+        <div id="log-body-rendered" class="prose prose-sm max-w-none leading-relaxed text-gray-200"></div>
 
         <script>
             const raw = @json($log->body);
             document.getElementById('log-body-rendered').innerHTML = marked.parse(raw);
         </script>
-
-    </div>
+    </x-ui.card>
 
 </x-app-layout>

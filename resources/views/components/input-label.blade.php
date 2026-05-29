@@ -1,4 +1,3 @@
-@props(['value'])
-<label {{ $attributes->merge(['class' => 'auth-label']) }}>
+<x-ui.label {{ $attributes }}>
     {{ $value ?? $slot }}
-</label>
+</x-ui.label>

@@ -12,249 +12,181 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="page">
+    <body class="min-h-screen bg-canvas text-gray-200">
 
-        {{-- Orbs --}}
-        <div class="orb orb-tl" aria-hidden="true"></div>
-        <div class="orb orb-tr" aria-hidden="true"></div>
-        <div class="orb orb-br" aria-hidden="true"></div>
-        <div class="orb orb-bl" aria-hidden="true"></div>
-
-        {{-- NAV --}}
-        <nav class="welcome-nav">
+        <nav class="relative z-10 flex h-[70px] items-center justify-between px-5 sm:px-10">
             <x-logo-sm />
-            <div class="welcome-nav-btns">
+            <div class="flex items-center gap-2.5">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="btn-ghost">Dashboard</a>
+                    <a href="{{ route('dashboard') }}"
+                        class="inline-flex items-center rounded-lg border border-white/[0.06] bg-white/[0.03] px-5 py-2 text-[13px] text-gray-400 transition-colors hover:bg-white/[0.05] hover:text-gray-200">Dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="btn-ghost">Log in</a>
-                    <a href="{{ route('register') }}" class="btn-primary">Get Started</a>
+                    <a href="{{ route('login') }}"
+                        class="inline-flex items-center rounded-lg border border-white/[0.06] bg-white/[0.03] px-5 py-2 text-[13px] text-gray-400 transition-colors hover:bg-white/[0.05] hover:text-gray-200">Log
+                        in</a>
+                    <a href="{{ route('register') }}"
+                        class="inline-flex items-center rounded-lg bg-accent px-5 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-accent-hover">Get
+                        Started</a>
                 @endauth
             </div>
         </nav>
 
-        {{-- HERO --}}
-        <section class="welcome-hero">
-            <h1 class="welcome-h1">
+        <section class="relative z-[2] flex min-h-[calc(100vh-70px)] flex-col items-center justify-center px-5 text-center sm:px-10">
+            <h1 class="mb-4 font-display text-[clamp(2.25rem,6vw,3.625rem)] font-extrabold leading-[1.05] tracking-tight text-gray-100">
                 Track your<br>
-                <span class="welcome-h1-accent">learning journey</span>
+                <span class="text-accent">learning journey</span>
             </h1>
-            <p class="welcome-tagline">
+            <p class="mx-auto mb-8 max-w-md text-[clamp(0.875rem,2vw,1rem)] leading-relaxed text-gray-400">
                 Log your progress, set goals, save resources and share your developer story with the world.
             </p>
-            <div class="welcome-hero-btns">
-                <a href="{{ route('register') }}" class="btn-lg btn-lg-primary">Get Started — it's free →</a>
-                <a href="#demo" class="btn-lg btn-lg-ghost">See how it works ↓</a>
+            <div class="flex flex-col items-center gap-3 sm:flex-row">
+                <a href="{{ route('register') }}"
+                    class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-7 py-3.5 text-[15px] font-semibold text-white transition-colors hover:bg-accent-hover sm:w-auto">
+                    Get Started — it's free
+                    <x-icon name="arrow-right" class="h-4 w-4" />
+                </a>
+                <a href="#demo"
+                    class="inline-flex w-full items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03] px-7 py-3.5 text-[15px] font-semibold text-gray-400 transition-colors hover:bg-white/[0.05] hover:text-gray-200 sm:w-auto">
+                    See how it works
+                </a>
             </div>
         </section>
 
-        {{-- DEMO --}}
-        <section class="welcome-demo" id="demo">
-            <div class="demo-label">
-                <div class="demo-label-dot"></div> Live demo
-            </div>
-            <h2 class="demo-title">See how it all <span class="demo-title-accent">works</span></h2>
-            <p class="demo-sub">Track progress, manage goals and stay in flow — all in one place.</p>
+        <section class="relative z-[2] min-h-screen px-5 pb-10 pt-2 sm:px-10 sm:pb-10" id="demo">
+            <h2 class="mb-2 text-center font-display text-[clamp(1.75rem,4vw,2.375rem)] font-extrabold tracking-tight text-gray-100">
+                See how it all <span class="text-accent">works</span>
+            </h2>
+            <p class="mb-7 text-center text-sm text-gray-400">Track progress, manage goals and stay in flow — all in one place.</p>
 
-            {{-- Top grid: Topics + Logs --}}
-            <div class="demo-grid">
-
-                {{-- Topics --}}
-                <div class="demo-card">
-                    <div class="demo-titlebar">
-                        <span class="titlebar-dot dot-orange"></span>
-                        <span class="titlebar-dot dot-muted"></span>
-                        <span class="titlebar-dot dot-purple"></span>
-                        <span class="titlebar-label">My Topics</span>
+            <div class="mb-3.5 grid grid-cols-1 gap-3.5 md:grid-cols-2">
+                <div class="overflow-hidden rounded-xl border border-white/[0.06] bg-surface shadow-card">
+                    <div class="flex items-center gap-1.5 border-b border-white/[0.06] bg-white/[0.02] px-4 py-2.5">
+                        <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                        <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                        <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                        <span class="ml-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">My Topics</span>
                     </div>
-                    <div class="demo-body">
-                        <div class="topic-row">
-                            <div class="topic-icon" style="background:rgba(97,218,251,0.12)"><i
-                                    class="devicon-react-original colored" style="font-size:17px"></i></div>
-                            <span class="topic-name">React</span>
-                            <div class="topic-track">
-                                <div class="topic-fill"
-                                    style="width:78%;background:linear-gradient(90deg,#a855f7,#7c3aed);box-shadow:0 0 8px rgba(168,85,247,0.6)">
+                    <div class="space-y-3 p-4">
+                        @foreach ([
+                            ['icon' => 'devicon-react-original colored', 'bg' => 'rgba(97,218,251,0.12)', 'name' => 'React', 'pct' => 78, 'color' => '#8b5cf6'],
+                            ['icon' => 'devicon-laravel-plain colored', 'bg' => 'rgba(255,45,32,0.12)', 'name' => 'Laravel', 'pct' => 65, 'color' => '#8b5cf6'],
+                            ['icon' => 'devicon-vuejs-plain colored', 'bg' => 'rgba(65,184,131,0.12)', 'name' => 'Vue 3', 'pct' => 38, 'color' => '#41b883'],
+                            ['icon' => 'devicon-javascript-plain colored', 'bg' => 'rgba(247,223,30,0.12)', 'name' => 'JavaScript', 'pct' => 52, 'color' => '#f7df1e'],
+                            ['icon' => 'devicon-typescript-plain colored', 'bg' => 'rgba(49,120,198,0.12)', 'name' => 'TypeScript', 'pct' => 20, 'color' => '#3178c6'],
+                        ] as $topic)
+                            <div class="flex items-center gap-2.5">
+                                <div class="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-lg"
+                                    style="background:{{ $topic['bg'] }}">
+                                    <i class="{{ $topic['icon'] }}" style="font-size:17px"></i>
+                                </div>
+                                <span class="w-20 flex-shrink-0 text-xs font-semibold text-gray-200">{{ $topic['name'] }}</span>
+                                <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
+                                    <div class="h-full rounded-full" style="width:{{ $topic['pct'] }}%;background:{{ $topic['color'] }}"></div>
+                                </div>
+                                <span class="w-[26px] text-right text-[10px] text-gray-400">{{ $topic['pct'] }}%</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="overflow-hidden rounded-xl border border-white/[0.06] bg-surface shadow-card">
+                    <div class="flex items-center gap-1.5 border-b border-white/[0.06] bg-white/[0.02] px-4 py-2.5">
+                        <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                        <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                        <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                        <span class="ml-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">Recent Logs</span>
+                    </div>
+                    <div class="divide-y divide-white/[0.06] p-4">
+                        @foreach ([
+                            ['title' => 'Finished React hooks deep dive', 'meta' => 'React · 2 hours ago · mood 5/5', 'color' => '#8b5cf6'],
+                            ['title' => 'Set up Laravel Breeze auth flow', 'meta' => 'Laravel · yesterday · mood 4/5', 'color' => '#8b5cf6'],
+                            ['title' => 'Explored Vue 3 Composition API', 'meta' => 'Vue 3 · 2 days ago · mood 3/5', 'color' => '#41b883'],
+                            ['title' => 'JS async/await patterns', 'meta' => 'JavaScript · 3 days ago · mood 4/5', 'color' => '#f7df1e'],
+                        ] as $log)
+                            <div class="flex items-start gap-2 py-2.5 first:pt-0 last:pb-0">
+                                <span class="mt-1 h-2 w-2 flex-shrink-0 rounded-full" style="background:{{ $log['color'] }}"></span>
+                                <div>
+                                    <div class="text-xs font-semibold text-gray-200">{{ $log['title'] }}</div>
+                                    <div class="text-[10px] text-gray-400">{{ $log['meta'] }}</div>
                                 </div>
                             </div>
-                            <span class="topic-pct">78%</span>
-                        </div>
-                        <div class="topic-row">
-                            <div class="topic-icon" style="background:rgba(255,45,32,0.12)"><i
-                                    class="devicon-laravel-plain colored" style="font-size:17px"></i></div>
-                            <span class="topic-name" style="color:#f97316">Laravel</span>
-                            <div class="topic-track">
-                                <div class="topic-fill"
-                                    style="width:65%;background:linear-gradient(90deg,#f97316,#ea580c);box-shadow:0 0 8px rgba(249,115,22,0.5)">
-                                </div>
-                            </div>
-                            <span class="topic-pct">65%</span>
-                        </div>
-                        <div class="topic-row">
-                            <div class="topic-icon" style="background:rgba(65,184,131,0.12)"><i
-                                    class="devicon-vuejs-plain colored" style="font-size:17px"></i></div>
-                            <span class="topic-name">Vue 3</span>
-                            <div class="topic-track">
-                                <div class="topic-fill"
-                                    style="width:38%;background:#41b883;box-shadow:0 0 6px rgba(65,184,131,0.4)"></div>
-                            </div>
-                            <span class="topic-pct">38%</span>
-                        </div>
-                        <div class="topic-row">
-                            <div class="topic-icon" style="background:rgba(247,223,30,0.12)"><i
-                                    class="devicon-javascript-plain colored" style="font-size:17px"></i></div>
-                            <span class="topic-name">JavaScript</span>
-                            <div class="topic-track">
-                                <div class="topic-fill"
-                                    style="width:52%;background:#f7df1e;box-shadow:0 0 6px rgba(247,223,30,0.3)"></div>
-                            </div>
-                            <span class="topic-pct">52%</span>
-                        </div>
-                        <div class="topic-row">
-                            <div class="topic-icon" style="background:rgba(49,120,198,0.12)"><i
-                                    class="devicon-typescript-plain colored" style="font-size:17px"></i></div>
-                            <span class="topic-name">TypeScript</span>
-                            <div class="topic-track">
-                                <div class="topic-fill"
-                                    style="width:20%;background:#3178c6;box-shadow:0 0 6px rgba(49,120,198,0.4)"></div>
-                            </div>
-                            <span class="topic-pct">20%</span>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
-
-                {{-- Recent Logs --}}
-                <div class="demo-card">
-                    <div class="demo-titlebar">
-                        <span class="titlebar-dot dot-orange"></span>
-                        <span class="titlebar-dot dot-muted"></span>
-                        <span class="titlebar-dot dot-purple"></span>
-                        <span class="titlebar-label">Recent Logs</span>
-                    </div>
-                    <div class="demo-body">
-                        <div class="log-row">
-                            <span class="log-dot" style="background:#a855f7;box-shadow:0 0 8px #a855f7"></span>
-                            <div>
-                                <div class="log-title">Finished React hooks deep dive</div>
-                                <div class="log-meta">React · 2 hours ago · mood 5/5</div>
-                            </div>
-                        </div>
-                        <div class="log-row">
-                            <span class="log-dot" style="background:#f97316;box-shadow:0 0 8px #f97316"></span>
-                            <div>
-                                <div class="log-title">Set up Laravel Breeze auth flow</div>
-                                <div class="log-meta">Laravel · yesterday · mood 4/5</div>
-                            </div>
-                        </div>
-                        <div class="log-row">
-                            <span class="log-dot" style="background:#41b883;box-shadow:0 0 6px #41b883"></span>
-                            <div>
-                                <div class="log-title">Explored Vue 3 Composition API</div>
-                                <div class="log-meta">Vue 3 · 2 days ago · mood 3/5</div>
-                            </div>
-                        </div>
-                        <div class="log-row">
-                            <span class="log-dot"
-                                style="background:#f7df1e;box-shadow:0 0 6px rgba(247,223,30,0.6)"></span>
-                            <div>
-                                <div class="log-title">JS async/await patterns</div>
-                                <div class="log-meta">JavaScript · 3 days ago · mood 4/5</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-            {{-- Full width Dashboard --}}
-            <div class="demo-card demo-card-full">
-                <div class="demo-titlebar">
-                    <span class="titlebar-dot dot-orange"></span>
-                    <span class="titlebar-dot dot-muted"></span>
-                    <span class="titlebar-dot dot-purple"></span>
-                    <span class="titlebar-label">Dashboard — @zobia_dev</span>
+            <div class="overflow-hidden rounded-xl border border-white/[0.06] bg-surface shadow-card">
+                <div class="flex items-center gap-1.5 border-b border-white/[0.06] bg-white/[0.02] px-4 py-2.5">
+                    <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                    <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                    <span class="h-2 w-2 rounded-full bg-gray-500 opacity-50"></span>
+                    <span class="ml-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">Dashboard — @zobia_dev</span>
                 </div>
-                <div class="demo-body">
-                    <div class="demo-stats">
-                        <div class="demo-stat">
-                            <div class="demo-stat-icon"
-                                style="background:rgba(168,85,247,0.2);box-shadow:0 0 12px rgba(168,85,247,0.2)">📝
+                <div class="p-4">
+                    <div class="mb-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                        @foreach ([
+                            ['icon' => 'file-text', 'num' => '24', 'label' => 'Total logs', 'accent' => false],
+                            ['icon' => 'book-open', 'num' => '5', 'label' => 'Active topics', 'accent' => true],
+                            ['icon' => 'target', 'num' => '3', 'label' => 'Goals due soon', 'accent' => true],
+                        ] as $stat)
+                            <div class="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5">
+                                <div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10">
+                                    <x-icon :name="$stat['icon']" @class(['h-5 w-5', 'text-accent' => $stat['accent'], 'text-gray-400' => ! $stat['accent']]) />
+                                </div>
+                                <div>
+                                    <div @class(['font-display text-[26px] font-bold leading-none', 'text-accent' => $stat['accent'], 'text-gray-100' => ! $stat['accent']])>{{ $stat['num'] }}</div>
+                                    <div class="mt-0.5 text-[10px] text-gray-400">{{ $stat['label'] }}</div>
+                                </div>
                             </div>
-                            <div>
-                                <div class="demo-stat-num">24</div>
-                                <div class="demo-stat-label">Total logs</div>
-                            </div>
-                        </div>
-                        <div class="demo-stat">
-                            <div class="demo-stat-icon"
-                                style="background:rgba(168,85,247,0.2);box-shadow:0 0 12px rgba(168,85,247,0.2)">📚
-                            </div>
-                            <div>
-                                <div class="demo-stat-num"
-                                    style="color:#a855f7;text-shadow:0 0 20px rgba(168,85,247,0.5)">5</div>
-                                <div class="demo-stat-label">Active topics</div>
-                            </div>
-                        </div>
-                        <div class="demo-stat">
-                            <div class="demo-stat-icon"
-                                style="background:rgba(249,115,22,0.2);box-shadow:0 0 12px rgba(249,115,22,0.2)">🎯
-                            </div>
-                            <div>
-                                <div class="demo-stat-num"
-                                    style="color:#f97316;text-shadow:0 0 20px rgba(249,115,22,0.5)">3</div>
-                                <div class="demo-stat-label">Goals due soon</div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-                    <div class="demo-dash-cols">
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div>
-                            <div class="demo-col-heading">Goals</div>
-                            <div class="demo-goal-row"><span class="demo-goal-check demo-goal-done-check"></span><span
-                                    class="demo-goal-label demo-goal-label-done">Complete React course</span><span
-                                    class="demo-goal-date demo-goal-date-done">Done</span></div>
-                            <div class="demo-goal-row"><span class="demo-goal-check"></span><span
-                                    class="demo-goal-label">Build Laravel API</span><span class="demo-goal-date">Jun
-                                    15</span></div>
-                            <div class="demo-goal-row"><span class="demo-goal-check"></span><span
-                                    class="demo-goal-label">Ship public profile</span><span class="demo-goal-date">Jun
-                                    30</span></div>
-                            <div class="demo-goal-row"><span class="demo-goal-check"></span><span
-                                    class="demo-goal-label">Learn TypeScript basics</span><span
-                                    class="demo-goal-date">Jul 10</span></div>
+                            <div class="mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">Goals</div>
+                            @foreach ([
+                                ['done' => true, 'label' => 'Complete React course', 'date' => 'Done'],
+                                ['done' => false, 'label' => 'Build Laravel API', 'date' => 'Jun 15'],
+                                ['done' => false, 'label' => 'Ship public profile', 'date' => 'Jun 30'],
+                                ['done' => false, 'label' => 'Learn TypeScript basics', 'date' => 'Jul 10'],
+                            ] as $goal)
+                                <div class="flex items-center gap-2 border-b border-white/[0.06] py-1.5 last:border-0">
+                                    <span @class([
+                                        'h-3.5 w-3.5 flex-shrink-0 rounded border',
+                                        'border-accent bg-accent' => $goal['done'],
+                                        'border-accent/40' => ! $goal['done'],
+                                    ])></span>
+                                    <span @class(['flex-1 text-[11px]', 'text-gray-400 line-through' => $goal['done'], 'text-gray-200' => ! $goal['done']])>{{ $goal['label'] }}</span>
+                                    <span @class(['text-[10px]', 'text-accent' => $goal['done'], 'text-gray-400' => ! $goal['done']])>{{ $goal['date'] }}</span>
+                                </div>
+                            @endforeach
                         </div>
                         <div>
-                            <div class="demo-col-heading">Saved Resources</div>
-                            <div class="log-row"><span class="log-dot"
-                                    style="background:#a855f7;box-shadow:0 0 8px #a855f7"></span>
-                                <div>
-                                    <div class="log-title">React docs — useEffect</div>
-                                    <div class="log-meta">docs · React</div>
+                            <div class="mb-2 text-[10px] font-bold uppercase tracking-wider text-gray-500">Saved Resources</div>
+                            @foreach ([
+                                ['title' => 'React docs — useEffect', 'meta' => 'docs · React', 'color' => '#8b5cf6'],
+                                ['title' => 'Laracasts — Livewire v3', 'meta' => 'video · Laravel', 'color' => '#8b5cf6'],
+                                ['title' => 'Vue 3 migration guide', 'meta' => 'article · Vue 3', 'color' => '#41b883'],
+                            ] as $resource)
+                                <div class="flex items-start gap-2 border-b border-white/[0.06] py-2.5 first:pt-0 last:pb-0">
+                                    <span class="mt-1 h-2 w-2 flex-shrink-0 rounded-full" style="background:{{ $resource['color'] }}"></span>
+                                    <div>
+                                        <div class="text-xs font-semibold text-gray-200">{{ $resource['title'] }}</div>
+                                        <div class="text-[10px] text-gray-400">{{ $resource['meta'] }}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="log-row"><span class="log-dot"
-                                    style="background:#f97316;box-shadow:0 0 8px #f97316"></span>
-                                <div>
-                                    <div class="log-title">Laracasts — Livewire v3</div>
-                                    <div class="log-meta">video · Laravel</div>
-                                </div>
-                            </div>
-                            <div class="log-row"><span class="log-dot"
-                                    style="background:#41b883;box-shadow:0 0 6px #41b883"></span>
-                                <div>
-                                    <div class="log-title">Vue 3 migration guide</div>
-                                    <div class="log-meta">article · Vue 3</div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Glow CTA --}}
-            <div class="glow-btn-wrap">
-                <a href="{{ route('register') }}" class="glow-btn">Get Started — it's free →</a>
+            <div class="mt-8 text-center">
+                <a href="{{ route('register') }}"
+                    class="inline-flex items-center gap-2 rounded-xl bg-accent px-12 py-4 text-[17px] font-bold tracking-wide text-white transition-colors hover:bg-accent-hover">
+                    Get Started — it's free
+                    <x-icon name="arrow-right" class="h-5 w-5" />
+                </a>
             </div>
-
         </section>
 
     </body>

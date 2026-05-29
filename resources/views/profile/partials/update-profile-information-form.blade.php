@@ -2,60 +2,51 @@
     @csrf
     @method('patch')
 
-    {{-- Name --}}
     <div>
-        <label class="auth-label" for="name">Name</label>
-        <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autofocus
-            autocomplete="name" class="auth-input w-full" />
+        <x-ui.label for="name">Name</x-ui.label>
+        <x-ui.input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autofocus
+            autocomplete="name" />
         @error('name')
-            <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+            <p class="mt-1 text-xs text-rose-400">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Username --}}
     <div>
-        <label class="auth-label" for="username">Username</label>
+        <x-ui.label for="username">Username</x-ui.label>
         <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm pointer-events-none"
-                style="color:#f0eef5">@</span>
-            <input id="username" name="username" type="text" value="{{ old('username', $user->username) }}" required
-                autocomplete="username" class="auth-input auth-input-username w-full" />
+            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">@</span>
+            <x-ui.input id="username" name="username" type="text" value="{{ old('username', $user->username) }}" required
+                autocomplete="username" class="pl-7" />
         </div>
         @error('username')
-            <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+            <p class="mt-1 text-xs text-rose-400">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Bio --}}
     <div>
-        <label class="auth-label" for="bio">Bio <span style="color:#8b7fa8">(optional)</span></label>
+        <x-ui.label for="bio">Bio <span class="text-gray-500">(optional)</span></x-ui.label>
         <textarea id="bio" name="bio" rows="3" placeholder="Tell the world what you're learning..."
-            class="auth-input w-full resize-none" style="height:auto">{{ old('bio', $user->bio) }}</textarea>
+            class="w-full resize-none rounded-lg border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-sm text-gray-200 placeholder:text-gray-500 focus:border-accent/50 focus:outline-none focus:ring-2 focus:ring-accent/20">{{ old('bio', $user->bio) }}</textarea>
         @error('bio')
-            <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+            <p class="mt-1 text-xs text-rose-400">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Email --}}
     <div>
-        <label class="auth-label" for="email">Email</label>
-        <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required
-            autocomplete="email" class="auth-input w-full" />
+        <x-ui.label for="email">Email</x-ui.label>
+        <x-ui.input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required
+            autocomplete="email" />
         @error('email')
-            <p class="text-red-400 text-xs mt-1">{{ $message }}</p>
+            <p class="mt-1 text-xs text-rose-400">{{ $message }}</p>
         @enderror
     </div>
 
-    {{-- Save --}}
     <div class="flex items-center gap-4 pt-1">
-        <button type="submit" class="btn-primary px-6 py-2 rounded-xl text-sm font-semibold">
-            Save Changes
-        </button>
-
+        <x-ui.button-primary type="submit">Save Changes</x-ui.button-primary>
         @if (session('status') === 'profile-updated')
-            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)" class="text-xs"
-                style="color:#41b883">
-                ✓ Saved
+            <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                class="flex items-center gap-1 text-xs text-emerald-400">
+                <x-icon name="check" class="h-3.5 w-3.5" /> Saved
             </p>
         @endif
     </div>

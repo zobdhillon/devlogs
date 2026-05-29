@@ -1,3 +1,3 @@
-<button {{ $attributes->merge(['type' => 'submit', 'class' => 'btn-primary  py-3 rounded-xl text-sm font-semibold tracking-wide']) }}>
+<x-ui.button-primary {{ $attributes }}>
     {{ $slot }}
-</button>
+</x-ui.button-primary>

@@ -1,6 +1,7 @@
+
 <x-app-layout>
 
-    <div class="dash-card max-w-2xl mx-auto" x-data="{
+    <x-ui.card class="mx-auto max-w-2xl" x-data="{
         icon: '{{ $topic->icon ?? 'devicon-javascript-plain' }}',
         iconOpen: false,
         icons: [
@@ -16,125 +17,84 @@
             'devicon-figma-plain', 'devicon-vscode-plain', 'devicon-firebase-plain'
         ]
     }">
-
-        {{-- Header --}}
-        <div class="flex items-center gap-3 mb-6">
-            <a href="{{ route('topics.index') }}" class="text-sm transition-colors duration-150" style="color:#8b7fa8"
-                onmouseover="this.style.color='#a855f7'" onmouseout="this.style.color='#8b7fa8'">
-                ← Back
+        <div class="mb-6 flex items-center gap-3">
+            <a href="{{ route('topics.index') }}" class="inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-accent">
+                <x-icon name="arrow-left" class="h-4 w-4" /> Back
             </a>
-            <h2 class="text-white font-bold text-lg" style="font-family:'Space Grotesk',sans-serif">
-                Edit Topic
-            </h2>
+            <h2 class="font-display text-lg font-bold text-gray-100">Edit Topic</h2>
         </div>
 
-        {{-- Edit Form --}}
         <form method="POST" action="{{ route('topics.update', $topic) }}">
             @csrf
             @method('PUT')
+            <div class="flex flex-wrap items-center gap-3">
+                <x-ui.input type="text" name="name" placeholder="Topic name e.g. React"
+                    value="{{ old('name', $topic->name) }}" required class="min-w-48 flex-1" />
 
-            <div class="flex flex-wrap gap-3 items-center">
-
-                {{-- Name --}}
-                <input type="text" name="name" placeholder="Topic name e.g. React"
-                    value="{{ old('name', $topic->name) }}" required class="auth-input flex-1 min-w-48" />
-
-                {{-- Color swatches --}}
                 <div class="flex items-center gap-2">
-                    @foreach (['#41b883', '#3178c6', '#f7df1e', '#ef4444'] as $c)
-                        <label class="topic-color-swatch"
-                            style="background:{{ $c }};box-shadow:0 0 8px {{ $c }}">
+                    @foreach (['#41b883', '#3178c6', '#f7df1e', '#8b5cf6'] as $c)
+                        <label class="block h-6 w-6 cursor-pointer rounded-full border-2 border-transparent transition-all has-[:checked]:scale-110 has-[:checked]:border-white"
+                            style="background:{{ $c }}">
                             <input type="radio" name="color" value="{{ $c }}" class="hidden"
                                 {{ old('color', $topic->color) === $c ? 'checked' : '' }}>
                         </label>
                     @endforeach
                 </div>
 
-                {{-- Icon picker --}}
                 <div class="relative" @click.outside="iconOpen = false">
                     <button type="button" @click="iconOpen = !iconOpen"
-                        class="auth-input flex items-center gap-2 cursor-pointer w-36 justify-between">
+                        class="flex w-36 cursor-pointer items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-sm">
                         <span class="flex items-center gap-2">
-                            <i :class="icon" class="text-base" style="color:#a855f7"></i>
+                            <i :class="icon" class="text-base text-accent"></i>
                             <span x-text="icon.replace('devicon-','').replace('-plain','').replace('-original','')"
-                                class="capitalize text-xs truncate" style="color:#f0ece8; max-width:64px"></span>
+                                class="max-w-[64px] truncate text-xs capitalize text-gray-200"></span>
                         </span>
-                        <svg class="w-3 h-3 flex-shrink-0 transition-transform duration-150"
-                            :class="iconOpen ? 'rotate-180' : ''" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24" style="color:#8b7fa8">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                        <span class="transition-transform" :class="iconOpen ? 'rotate-180' : ''">
+                            <x-icon name="chevron-down" class="h-3 w-3 text-gray-400" />
+                        </span>
                     </button>
-
-                    <div x-show="iconOpen" x-transition:enter="transition ease-out duration-150"
-                        x-transition:enter-start="opacity-0 -translate-y-1"
-                        x-transition:enter-end="opacity-100 translate-y-0"
-                        x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100"
-                        x-transition:leave-end="opacity-0"
-                        class="icon-picker-grid absolute z-50 mt-1 rounded-xl p-2 grid grid-cols-6 gap-1"
-                        style="background:#0e0a1f; border:1px solid rgba(168,85,247,0.25); width:220px; max-height:200px; overflow-y:auto; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                    <div x-show="iconOpen" x-transition
+                        class="absolute z-50 mt-1 grid max-h-[200px] w-[220px] grid-cols-6 gap-1 overflow-y-auto rounded-xl border border-white/[0.06] bg-surface p-2 shadow-md [&::-webkit-scrollbar]:hidden"
+                        style="scrollbar-width:none">
                         <template x-for="ic in icons" :key="ic">
                             <button type="button" @click="icon = ic; iconOpen = false"
-                                class="flex items-center justify-center p-2 rounded-lg transition-all duration-100"
-                                :class="icon === ic ? 'bg-purple-500/20' : 'hover:bg-white/5'"
-                                :title="ic.replace('devicon-', '').replace('-plain', '').replace('-original', '')">
-                                <i :class="ic" class="text-lg"
-                                    :style="icon === ic ? 'color:#a855f7' : 'color:#c4b8e8'"></i>
+                                class="flex items-center justify-center rounded-lg p-2 transition-colors"
+                                :class="icon === ic ? 'bg-accent/10' : 'hover:bg-white/[0.04]'">
+                                <i :class="ic" class="text-lg" :class="icon === ic ? 'text-accent' : 'text-gray-400'"></i>
                             </button>
                         </template>
                     </div>
-
                     <input type="hidden" name="icon" :value="icon" />
                 </div>
 
-                {{-- Status dropdown --}}
-                <div x-data="{
-                    open: false,
-                    selected: '{{ old('status', $topic->status) }}',
-                    options: ['active', 'paused', 'completed']
-                }" class="relative">
+                <div x-data="{ open: false, selected: '{{ old('status', $topic->status) }}', options: ['active', 'paused', 'completed'] }"
+                    class="relative">
                     <input type="hidden" name="status" :value="selected">
                     <button type="button" @click="open = !open"
-                        class="auth-input w-36 flex items-center justify-between gap-2 cursor-pointer">
-                        <span x-text="selected" class="capitalize"></span>
-                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                        class="flex w-36 cursor-pointer items-center justify-between gap-2 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3.5 py-2.5 text-sm capitalize text-gray-200">
+                        <span x-text="selected"></span>
+                        <x-icon name="chevron-down" class="h-4 w-4 text-gray-400" />
                     </button>
-                    <div x-show="open" @click.outside="open = false" x-transition class="custom-select-dropdown">
+                    <div x-show="open" @click.outside="open = false" x-transition class="absolute left-0 top-[calc(100%+6px)] z-[999] w-full overflow-hidden rounded-lg border border-white/[0.06] bg-surface shadow-md">
                         <template x-for="option in options" :key="option">
-                            <div @click="selected = option; open = false" class="custom-select-option"
-                                :class="{ 'custom-select-option-active': selected === option }" x-text="option">
-                            </div>
+                            <div @click="selected = option; open = false" class="cursor-pointer px-3.5 py-2.5 text-sm capitalize text-gray-400 transition-colors hover:bg-white/[0.04] hover:text-gray-200 capitalize"
+                                :class="{ 'bg-accent/10 text-gray-200': selected === option }" x-text="option"></div>
                         </template>
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3" x-data="{ progress: {{ $topic->progress }} }">
-                    <input type="range" name="progress" min="0" max="100" x-model="progress"
-                        class="topic-slider" />
-                    <span class="text-sm w-10" style="color:#8b7fa8" x-text="progress + '%'"></span>
+                    <input type="range" name="progress" min="0" max="100" x-model="progress" class="topic-slider" />
+                    <span class="w-10 text-sm text-gray-400" x-text="progress + '%'"></span>
                 </div>
 
-                {{-- Submit --}}
-                <button type="submit" class="btn-primary px-6 py-2 rounded-xl text-sm font-semibold">
-                    Save Changes
-                </button>
-
-                {{-- Cancel --}}
-                <a href="{{ route('topics.index') }}"
-                    class="px-6 py-2 rounded-xl text-sm font-semibold transition-colors duration-150"
-                    style="color:#8b7fa8;border:1px solid rgba(168,85,247,0.15)"
-                    onmouseover="this.style.color='#f0ece8'" onmouseout="this.style.color='#8b7fa8'">
-                    Cancel
-                </a>
+                <x-ui.button-primary type="submit">Save Changes</x-ui.button-primary>
+                <a href="{{ route('topics.index') }}" class="inline-flex items-center gap-1 px-4 py-2 text-sm text-gray-400 transition-colors hover:text-accent">Cancel</a>
             </div>
-
             @error('name')
-                <p class="text-red-400 text-sm mt-2">{{ $message }}</p>
+                <p class="mt-2 text-sm text-rose-400">{{ $message }}</p>
             @enderror
         </form>
-
-    </div>
+    </x-ui.card>
 
 </x-app-layout>

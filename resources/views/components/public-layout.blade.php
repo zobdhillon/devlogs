@@ -12,12 +12,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="dashboard-bg min-h-screen">
-        <div class="orb orb-tl" aria-hidden="true"></div>
-        <div class="orb orb-tr" aria-hidden="true"></div>
-        <div class="orb orb-br" aria-hidden="true"></div>
-        <div class="orb orb-bl" aria-hidden="true"></div>
-        <main class="relative z-10 max-w-2xl mx-auto px-4 py-12">
+    <body class="min-h-screen bg-canvas">
+        <main class="relative z-10 mx-auto max-w-2xl px-4 py-12">
             {{ $slot }}
         </main>
     </body>

@@ -1,39 +1,25 @@
 <x-app-layout>
 
-    <div class="max-w-2xl mx-auto space-y-4">
-
-        {{-- Profile Information --}}
-        <div class="dash-card">
-            <h2 class="text-white font-bold text-lg mb-1" style="font-family:'Space Grotesk',sans-serif">
-                Profile Information
-            </h2>
-            <p class="text-xs mb-6" style="color:#8b7fa8">Update your name, username, bio and email address.</p>
-
+    <div class="mx-auto max-w-2xl space-y-4">
+        <x-ui.card>
+            <h2 class="mb-1 font-display text-lg font-bold text-gray-100">Profile Information</h2>
+            <p class="mb-6 text-xs text-gray-400">Update your name, username, bio and email address.</p>
             @include('profile.partials.update-profile-information-form')
-        </div>
+        </x-ui.card>
 
-        {{-- Update Password --}}
-        <div class="dash-card">
-            <h2 class="text-white font-bold text-lg mb-1" style="font-family:'Space Grotesk',sans-serif">
-                Update Password
-            </h2>
-            <p class="text-xs mb-6" style="color:#8b7fa8">Use a long, random password to keep your account secure.</p>
-
+        <x-ui.card>
+            <h2 class="mb-1 font-display text-lg font-bold text-gray-100">Update Password</h2>
+            <p class="mb-6 text-xs text-gray-400">Use a long, random password to keep your account secure.</p>
             @include('profile.partials.update-password-form')
-        </div>
+        </x-ui.card>
 
-        {{-- Danger Zone --}}
-        <div class="dash-card" style="border-color:rgba(244,63,94,0.2)">
-            <h2 class="text-sm font-bold mb-1" style="font-family:'Space Grotesk',sans-serif;color:#f43f5e">
-                Danger Zone
-            </h2>
-            <p class="text-xs mb-4" style="color:#8b7fa8">
+        <x-ui.card class="border-rose-500/20">
+            <h2 class="mb-1 font-display text-sm font-bold text-rose-400">Danger Zone</h2>
+            <p class="mb-4 text-xs text-gray-400">
                 Once your account is deleted, all data will be permanently removed. This cannot be undone.
             </p>
-
             @include('profile.partials.delete-user-form')
-        </div>
-
+        </x-ui.card>
     </div>
 
 </x-app-layout>
