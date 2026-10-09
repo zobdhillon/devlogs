@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/ai/insights', [AiController::class, 'insights'])->middleware('auth');
+Route::post('/ai/insights', [AiController::class, 'insights'])->middleware(['auth', 'throttle:6,1']);
 
 Route::get('/u/{username}', [PublicProfileController::class, 'show'])->name('profile.public');
 

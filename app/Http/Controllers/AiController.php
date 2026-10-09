@@ -56,10 +56,12 @@ class AiController extends Controller
             'Authorization' => 'Bearer ' . config('app.groq_api_key'),
             'Content-Type' => 'application/json',
         ])->post('https://api.groq.com/openai/v1/chat/completions', [
-            'model' => 'llama-3.1-8b-instant',
+            'model' => 'openai/gpt-oss-120b',
             'messages' => [
                 ['role' => 'user', 'content' => $prompt]
             ],
+            'reasoning_effort' => 'low',
+            'temperature' => 0.7,
             'max_tokens' => 500
         ]);
 
